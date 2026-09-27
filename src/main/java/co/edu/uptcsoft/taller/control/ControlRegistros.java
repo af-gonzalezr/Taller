@@ -8,22 +8,23 @@ public class ControlRegistros {
 
     private final RegistrarCliente registrarCliente;
 
+
     public ControlRegistros(RegistrarCliente registrarCliente) {
         this.registrarCliente = registrarCliente;
     }
 
 
-    public String crearCLiente(String idCliente, String nombre, String telefono, String email){
+    public Respuesta<Cliente> crearCLiente(String idCliente, String nombre, String telefono, String email){
+
         if(idCliente.isBlank()||nombre.isBlank()||telefono.isBlank()||email.isBlank()){
-            return "Faltan algunos campos";
+            return Respuesta.error("Faltan algunos campos");
         } else if (!email.contains("@")){
-            return "El email debe contener '@'";
+            return Respuesta.error("El email debe contener '@'");
         } else if (telefono.charAt(0)!= '3') {
-            return "El teléfono debe empezar por 3";
-        } else if (telefono.length()>10) {
-            return "El teléfono debe tener 10 dígitos";
+            return Respuesta.error("El teléfono debe empezar por 3");
+        } else if (telefono.length()!=10) {
+            return Respuesta.error("El teléfono debe tener 10 dígitos");
         }
-
-
+        return registrarCliente.execute(idCliente, nombre, telefono, email);
     }
 }

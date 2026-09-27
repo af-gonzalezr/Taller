@@ -35,4 +35,13 @@ public class Cliente {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "idCliente='" + idCliente + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
