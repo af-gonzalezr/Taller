@@ -31,8 +31,9 @@ public class RegistrarAutoImpl implements RegistrarAuto {
             return Respuesta.error("El cliente no existe");
         }
         Cliente c = cOpt.get();
-        Automovil automovil = new Automovil(placa, marca, modelo, c, numeroPuertas);
-        vehiculoRepository.guardar(automovil);
-        return Respuesta.completado("Automóvil registrado exitosamente",automovil);
+        Automovil a = new Automovil(placa, marca, modelo, c, numeroPuertas);
+        vehiculoRepository.guardar(a);
+        return Respuesta.completado("Automovil registrado exitosamente",a);
+
     }
 }

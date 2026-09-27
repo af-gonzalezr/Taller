@@ -5,8 +5,6 @@ import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.service.RegistrarCliente;
 import co.edu.uptcsoft.taller.service.Respuesta;
 
-import javax.swing.event.CaretListener;
-
 public class RegistrarClienteImpl implements RegistrarCliente {
 
     private final Repository<Cliente> clienteRepository;

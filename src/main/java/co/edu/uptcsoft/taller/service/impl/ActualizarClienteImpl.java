@@ -19,7 +19,7 @@ public class ActualizarClienteImpl implements ActualizarCliente {
     public Respuesta<Cliente> execute(String idCliente, String nuevoNombre, String nuevoTelefono, String nuevoEmail) {
         Optional<Cliente> cOpt = clienteRepository.buscarPorId(idCliente);
         if(cOpt.isEmpty()){
-            return Respuesta.error("el cliente no existe");
+            return Respuesta.error("El cliente no existe");
         }
         Cliente c = cOpt.get();
         c.setInfo(nuevoNombre,nuevoTelefono,nuevoEmail);

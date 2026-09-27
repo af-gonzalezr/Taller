@@ -4,7 +4,6 @@ import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.repository.Repository;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class ClienteRepository implements Repository<Cliente> {
@@ -23,7 +22,7 @@ public class ClienteRepository implements Repository<Cliente> {
             return null;
         }
 
-        Optional<Cliente> existente = buscarPorId(elemento.getId());
+        Optional<Cliente> existente = buscarPorId(elemento.getIdCliente());
 
         if(existente.isPresent()){
             int index = clientes.indexOf(elemento);
@@ -37,7 +36,7 @@ public class ClienteRepository implements Repository<Cliente> {
     @Override
     public Optional<Cliente> buscarPorId(String id) {
         return clientes.stream()
-                .filter(c->c.getId().equalsIgnoreCase(id))
+                .filter(c->c.getIdCliente().equalsIgnoreCase(id))
                 .findFirst();
     }
 
@@ -46,6 +45,6 @@ public class ClienteRepository implements Repository<Cliente> {
         if(id == null || id.isBlank()){
             return false;
         }
-        return clientes.removeIf(c->c.getId().equalsIgnoreCase(id));
+        return clientes.removeIf(c->c.getIdCliente().equalsIgnoreCase(id));
     }
 }
