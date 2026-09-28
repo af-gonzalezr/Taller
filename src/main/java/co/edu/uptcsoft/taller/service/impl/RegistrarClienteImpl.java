@@ -15,11 +15,13 @@ public class RegistrarClienteImpl implements RegistrarCliente {
 
     @Override
     public Respuesta<Cliente> execute(String idCliente, String nombre, String telefono, String email) {
-        Cliente c = new Cliente(idCliente,nombre,telefono,email);
         if(clienteRepository.buscarPorId(idCliente).isPresent()){
             return Respuesta.error("Ya existe un cliente con esa id");
         }
+
+        Cliente c = new Cliente(idCliente,nombre,telefono,email);
+        clienteRepository.guardar(c);
         return Respuesta.completado("Cliente registrado exitosamente",
-                clienteRepository.guardar(c));
+               c);
     }
 }
