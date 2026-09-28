@@ -26,7 +26,7 @@ public class OrdenTrabajo implements Comparable<OrdenTrabajo> {
         this.tecnico = tecnico;
         this.observacionesIngreso = observacionesIngreso;
         this.observacionesEntrega = observacionesEntrega;
-        listaTrabajos =new ArrayList<>();
+        listaTrabajos = new ArrayList<>();
     }
 
     public void agregarTrabajo(ServicioRealizado trabajo) {
