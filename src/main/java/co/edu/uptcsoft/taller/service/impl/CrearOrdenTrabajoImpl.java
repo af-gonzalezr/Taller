@@ -4,6 +4,7 @@ import co.edu.uptcsoft.taller.model.EstadoOrden;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.model.Tecnico;
 import co.edu.uptcsoft.taller.model.Vehiculo;
+import co.edu.uptcsoft.taller.repository.OrdenRepo;
 import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.service.CrearOrdenTrabajo;
 import co.edu.uptcsoft.taller.service.Respuesta;
@@ -15,16 +16,20 @@ public class CrearOrdenTrabajoImpl implements CrearOrdenTrabajo {
 
     private final Repository<Vehiculo> vehiculoRepository;
     private final Repository<Tecnico> tecnicoRepository;
-    private final Repository<OrdenTrabajo> ordenTrabajoRepository;
+    private final OrdenRepo ordenTrabajoRepository;
 
-    public CrearOrdenTrabajoImpl(Repository<Vehiculo> vehiculoRepository, Repository<Tecnico> tecnicoRepository, Repository<OrdenTrabajo> ordenTrabajoRepository) {
+    public CrearOrdenTrabajoImpl(Repository<Vehiculo> vehiculoRepository, Repository<Tecnico> tecnicoRepository, OrdenRepo ordenTrabajoRepository) {
         this.vehiculoRepository = vehiculoRepository;
         this.tecnicoRepository = tecnicoRepository;
         this.ordenTrabajoRepository = ordenTrabajoRepository;
     }
 
     @Override
-    public Respuesta<OrdenTrabajo> execute(String idOrden, LocalDateTime fechaHoraIngreso, String idVehiculo, String idTecnico, String observacionesIngreso) {
+    public Respuesta<OrdenTrabajo> execute(String idOrden,
+                                           LocalDateTime fechaHoraIngreso,
+                                           String idVehiculo,
+                                           String idTecnico,
+                                           String observacionesIngreso) {
         if(ordenTrabajoRepository.buscarPorId(idOrden).isPresent()){
             return Respuesta.error("Ya existe una Orden con esa id");
         }
