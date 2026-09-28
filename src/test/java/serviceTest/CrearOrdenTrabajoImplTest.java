@@ -5,6 +5,7 @@ import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.model.Tecnico;
 import co.edu.uptcsoft.taller.model.Vehiculo;
+import co.edu.uptcsoft.taller.repository.OrdenRepo;
 import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.repository.impl.OrdenRepository;
 import co.edu.uptcsoft.taller.repository.impl.TecnicoRepository;
@@ -50,7 +51,7 @@ public class CrearOrdenTrabajoImplTest {
     private static CrearOrdenTrabajo setupDeRepositorios() {
         Repository<Vehiculo> vehiculoRepo = new VehiculoRepository();
         Repository<Tecnico> tecnicoRepo = new TecnicoRepository();
-        Repository<OrdenTrabajo> ordenTrabajoRepo = new OrdenRepository();
+        OrdenRepo ordenTrabajoRepo = new OrdenRepository();
 
         // Carga de datos base (Cliente, Vehículo y Técnico)
         Cliente cliente = new Cliente("12345", "Jorge", "911", "jorge@email.com");

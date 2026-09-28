@@ -3,7 +3,9 @@ package co.edu.uptcsoft.taller.service.impl;
 import co.edu.uptcsoft.taller.model.EstadoOrden;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.model.ServicioRealizado;
+import co.edu.uptcsoft.taller.repository.OrdenRepo;
 import co.edu.uptcsoft.taller.repository.Repository;
+import co.edu.uptcsoft.taller.repository.impl.OrdenRepository;
 import co.edu.uptcsoft.taller.service.AgregarTrabajoAOrden;
 import co.edu.uptcsoft.taller.service.Respuesta;
 
@@ -11,9 +13,9 @@ import java.util.Optional;
 
 public class AgregarTrabajoAOrdenImpl implements AgregarTrabajoAOrden {
 
-    private final Repository<OrdenTrabajo> ordenTrabajoRepository;
+    private final OrdenRepo ordenTrabajoRepository;
 
-    public AgregarTrabajoAOrdenImpl(Repository<OrdenTrabajo> ordenTrabajoRepository) {
+    public AgregarTrabajoAOrdenImpl(OrdenRepo ordenTrabajoRepository) {
         this.ordenTrabajoRepository = ordenTrabajoRepository;
     }
 
