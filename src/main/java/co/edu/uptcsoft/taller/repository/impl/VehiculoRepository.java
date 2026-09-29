@@ -25,7 +25,7 @@ public class VehiculoRepository implements Repository<Vehiculo> {
         Optional<Vehiculo> existente = buscarPorId(elemento.getPlaca());
 
         if(existente.isPresent()){
-            int index = vehiculos.indexOf(elemento);
+            int index = vehiculos.indexOf(existente.get());
             vehiculos.set(index,elemento);
         }else {
             vehiculos.add(elemento);

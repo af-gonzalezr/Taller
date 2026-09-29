@@ -25,7 +25,7 @@ public class ClienteRepository implements Repository<Cliente> {
         Optional<Cliente> existente = buscarPorId(elemento.getIdCliente());
 
         if(existente.isPresent()){
-            int index = clientes.indexOf(elemento);
+            int index = clientes.indexOf(existente.get());
             clientes.set(index,elemento);
         }else {
             clientes.add(elemento);
