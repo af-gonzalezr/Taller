@@ -1,5 +1,7 @@
 package co.edu.uptcsoft.taller.service;
 
+import co.edu.uptcsoft.taller.model.OrdenTrabajo;
+
 public interface CancelarOrden {
-    void execute(String idOrden);
+    Respuesta<OrdenTrabajo> execute(String idOrden);
 }

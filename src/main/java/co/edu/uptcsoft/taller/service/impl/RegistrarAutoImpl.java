@@ -33,7 +33,7 @@ public class RegistrarAutoImpl implements RegistrarAuto {
         Cliente c = cOpt.get();
         Automovil a = new Automovil(placa, marca, modelo, c, numeroPuertas);
         vehiculoRepository.guardar(a);
-        return Respuesta.completado("Automovil registrado exitosamente",a);
+        return Respuesta.completado("Automóvil registrado exitosamente",a);
 
     }
 }
