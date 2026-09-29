@@ -25,7 +25,11 @@ public class OrdenesClienteImpl implements OrdenesCliente {
         if(clienteRepository.buscarPorId(idCliente).isEmpty()){
             return Respuesta.error("El cliente no existe");
         }
-        return Respuesta.completado("Ordenes del Cliente",
-                ordenTrabajoRepository.buscarPorCliente(idCliente));
+        List<OrdenTrabajo> ordenes = ordenTrabajoRepository.buscarPorCliente(idCliente);
+        if(ordenes.isEmpty()){
+            return Respuesta.completado("No hay ordenes registradas con ese cliente",ordenes);
+        }else{
+            return Respuesta.completado("Ordenes registradas con ese cliente",ordenes);
+        }
     }
 }
