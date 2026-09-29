@@ -44,4 +44,14 @@ public abstract class Vehiculo {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+    
+    @Override
+public String toString() {
+    return getClass().getSimpleName() + "{" +
+            "placa='" + placa + '\'' +
+            ", marca='" + marca + '\'' +
+            ", modelo=" + modelo +
+            ", idCliente='" + cliente.getIdCliente() + '\'' +
+            '}';
+}
 }

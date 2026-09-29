@@ -40,10 +40,14 @@ public class VistaMain {
             }
         }
     }
-    public void menuRegistros(){
-        String[] opciones = {
-                "1. RegistrarCliente"
-        };
+    public void menuRegistros() {
+    String[] opciones = {
+            "1. RegistrarCliente",
+            "2. RegistrarTecnico",
+            "3. Volver"
+    };
+    boolean salir = false;
+    while (!salir) {
         int seleccion = JOptionPane.showOptionDialog(null,
                 "SELECCIONE UNA OPCION DEL MENU",
                 "SISTEMA TALLER",
@@ -53,11 +57,13 @@ public class VistaMain {
                 opciones,
                 opciones[0]
         );
-        switch (seleccion){
-            case 0->registrarCliente();
+        switch (seleccion) {
+            case 0 -> registrarCliente();
+            case 1 -> JOptionPane.showMessageDialog(null, "Próximamente");
+            case 2, -1 -> salir = true;
         }
-
     }
+}
 
     public void registrarCliente(){
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
