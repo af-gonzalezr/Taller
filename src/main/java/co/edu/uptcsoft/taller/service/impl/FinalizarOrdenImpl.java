@@ -2,18 +2,18 @@ package co.edu.uptcsoft.taller.service.impl;
 
 import co.edu.uptcsoft.taller.model.EstadoOrden;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
-import co.edu.uptcsoft.taller.repository.Repository;
+import co.edu.uptcsoft.taller.repository.OrdenRepo;
 import co.edu.uptcsoft.taller.service.FinalizarOrden;
-import co.edu.uptcsoft.taller.service.OrdenesTecnico;
 import co.edu.uptcsoft.taller.service.Respuesta;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class FinalizarOrdenImpl implements FinalizarOrden {
 
-    private final Repository<OrdenTrabajo> ordenTrabajoRepository;
+    private final OrdenRepo ordenTrabajoRepository;
 
-    public FinalizarOrdenImpl(Repository<OrdenTrabajo> ordenTrabajoRepository) {
+    public FinalizarOrdenImpl(OrdenRepo ordenTrabajoRepository) {
         this.ordenTrabajoRepository = ordenTrabajoRepository;
     }
 
@@ -28,6 +28,7 @@ public class FinalizarOrdenImpl implements FinalizarOrden {
             return Respuesta.error("Solo se pueden finalizar ordenes en proceso");
         }
         orden.setEstado(EstadoOrden.FINALIZADA);
+        orden.setFechaHoraEntrega(LocalDateTime.now());
         return Respuesta.completado("Orden finalizada exitosamente",
                 ordenTrabajoRepository.guardar(orden));
     }
