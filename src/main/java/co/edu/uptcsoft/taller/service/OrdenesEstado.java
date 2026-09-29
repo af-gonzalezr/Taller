@@ -6,5 +6,5 @@ import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import java.util.List;
 
 public interface OrdenesEstado {
-    List<OrdenTrabajo> execute(EstadoOrden estadoOrden);
+    Respuesta<List<OrdenTrabajo>> execute(EstadoOrden estadoOrden);
 }

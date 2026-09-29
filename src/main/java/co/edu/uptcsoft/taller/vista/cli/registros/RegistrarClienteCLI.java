@@ -32,7 +32,7 @@ public class RegistrarClienteCLI {
         String email = sc.nextLine();
 
         RespuestaCLI.mostrarRespuesta(controlRegistros
-                .crearCLiente(idCliente,
+                .crearCliente(idCliente,
                         nombre,
                         telefono,
                         email));

@@ -1,6 +1,7 @@
 package co.edu.uptcsoft.taller.repository.impl;
 
 import co.edu.uptcsoft.taller.model.Cliente;
+import co.edu.uptcsoft.taller.model.EstadoOrden;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.repository.OrdenRepo;
 import co.edu.uptcsoft.taller.repository.Repository;
@@ -54,5 +55,17 @@ public class OrdenRepository implements OrdenRepo {
         return ordenes.stream()
                 .filter(o->o.getVehiculo().getCliente().getIdCliente().equalsIgnoreCase(idCliente))
                 .toList();
+    }
+
+    @Override
+    public List<OrdenTrabajo> buscarPorEstado(EstadoOrden estadoOrden) {
+        return ordenes.stream()
+                .filter(o-> o.getEstado() == estadoOrden)
+                .toList();
+    }
+
+    @Override
+    public List<OrdenTrabajo> todas() {
+        return List.copyOf(ordenes);
     }
 }

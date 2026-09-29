@@ -92,10 +92,12 @@ public class OrdenTrabajo implements Comparable<OrdenTrabajo> {
         return new ArrayList<>(listaTrabajos);
     }
 
-    public String generarFactura() {
+    @Override
+    public String toString() {
         StringBuilder factura = new StringBuilder();
 
         factura.append("FACTURA ORDEN: ").append(idOrden).append("\n");
+        factura.append("ESTADO").append(estado).append("\n");
         factura.append("Cliente: ")
                 .append(vehiculo.getCliente().getNombre())
                 .append("\n");
@@ -105,13 +107,18 @@ public class OrdenTrabajo implements Comparable<OrdenTrabajo> {
 
         factura.append("TRABAJOS:\n");
 
-        for (ServicioRealizado trabajo : listaTrabajos) {
-            factura.append("- ")
-                    .append(trabajo.getDescripcion())
-                    .append(" $")
-                    .append(trabajo.getValor())
-                    .append("\n");
+        if(listaTrabajos.isEmpty()){
+            factura.append("Aun no hay trabajos registrados en esta orden");
+        }else {
+            for (ServicioRealizado trabajo : listaTrabajos) {
+                factura.append("- ")
+                        .append(trabajo.getDescripcion())
+                        .append(" $")
+                        .append(trabajo.getValor())
+                        .append("\n");
+            }
         }
+
 
         factura.append("\nTOTAL: $")
                 .append(calcularCostoTotal());
