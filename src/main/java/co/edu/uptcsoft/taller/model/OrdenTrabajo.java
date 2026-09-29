@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrdenTrabajo implements Comparable<OrdenTrabajo> {
-    private String idOrden;
-    private LocalDateTime fechaHoraIngreso;
+    private final String idOrden;
+    private final LocalDateTime fechaHoraIngreso;
     private LocalDateTime fechaHoraEntrega;
     private EstadoOrden estado;
-    private Vehiculo vehiculo;
-    private Tecnico tecnico;
-    private String observacionesIngreso;
+    private final Vehiculo vehiculo;
+    private final Tecnico tecnico;
+    private final String observacionesIngreso;
     private String observacionesEntrega;
-    private List<ServicioRealizado> listaTrabajos;
+    private final List<ServicioRealizado> listaTrabajos;
 
     public OrdenTrabajo(String idOrden, LocalDateTime fechaHoraIngreso, LocalDateTime fechaHoraEntrega,
                         EstadoOrden estado, Vehiculo vehiculo, Tecnico tecnico, String observacionesIngreso,
@@ -48,16 +48,8 @@ public class OrdenTrabajo implements Comparable<OrdenTrabajo> {
         return idOrden;
     }
 
-    public void setIdOrden(String idOrden) {
-        this.idOrden = idOrden;
-    }
-
     public LocalDateTime getFechaHoraIngreso() {
         return fechaHoraIngreso;
-    }
-
-    public void setFechaHoraIngreso(LocalDateTime fechaHoraIngreso) {
-        this.fechaHoraIngreso = fechaHoraIngreso;
     }
 
     public LocalDateTime getFechaHoraEntrega() {
@@ -80,24 +72,12 @@ public class OrdenTrabajo implements Comparable<OrdenTrabajo> {
         return vehiculo;
     }
 
-    public void setVehiculo(Vehiculo vehiculo) {
-        this.vehiculo = vehiculo;
-    }
-
     public Tecnico getTecnico() {
         return tecnico;
     }
 
-    public void setTecnico(Tecnico tecnico) {
-        this.tecnico = tecnico;
-    }
-
     public String getObservacionesIngreso() {
         return observacionesIngreso;
-    }
-
-    public void setObservacionesIngreso(String observacionesIngreso) {
-        this.observacionesIngreso = observacionesIngreso;
     }
 
     public String getObservacionesEntrega() {
@@ -112,7 +92,31 @@ public class OrdenTrabajo implements Comparable<OrdenTrabajo> {
         return new ArrayList<>(listaTrabajos);
     }
 
-    public void setListaTrabajos(List<ServicioRealizado> listaTrabajos) {
-        this.listaTrabajos = listaTrabajos == null ? new ArrayList<>() : new ArrayList<>(listaTrabajos);
+    public String generarFactura() {
+        StringBuilder factura = new StringBuilder();
+
+        factura.append("FACTURA ORDEN: ").append(idOrden).append("\n");
+        factura.append("Cliente: ")
+                .append(vehiculo.getCliente().getNombre())
+                .append("\n");
+        factura.append("Vehículo: ")
+                .append(vehiculo.getPlaca())
+                .append("\n\n");
+
+        factura.append("TRABAJOS:\n");
+
+        for (ServicioRealizado trabajo : listaTrabajos) {
+            factura.append("- ")
+                    .append(trabajo.getDescripcion())
+                    .append(" $")
+                    .append(trabajo.getValor())
+                    .append("\n");
+        }
+
+        factura.append("\nTOTAL: $")
+                .append(calcularCostoTotal());
+
+        return factura.toString();
     }
+
 }
