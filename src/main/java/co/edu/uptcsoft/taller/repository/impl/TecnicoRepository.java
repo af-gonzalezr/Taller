@@ -26,7 +26,7 @@ public class TecnicoRepository implements Repository<Tecnico>{
         Optional<Tecnico> existente = buscarPorId(elemento.getIdTecnico());
 
         if(existente.isPresent()){
-            int index = tecnicos.indexOf(elemento);
+            int index = tecnicos.indexOf(existente.get());
             tecnicos.set(index,elemento);
         }else {
             tecnicos.add(elemento);

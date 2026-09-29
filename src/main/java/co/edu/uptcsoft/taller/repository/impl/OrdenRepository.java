@@ -27,7 +27,7 @@ public class OrdenRepository implements OrdenRepo {
         Optional<OrdenTrabajo> existente = buscarPorId(elemento.getIdOrden());
 
         if(existente.isPresent()){
-            int index = ordenes.indexOf(elemento);
+            int index = ordenes.indexOf(existente.get());
             ordenes.set(index,elemento);
         }else {
             ordenes.add(elemento);
