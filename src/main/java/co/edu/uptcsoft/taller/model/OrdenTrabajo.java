@@ -92,7 +92,9 @@ public class OrdenTrabajo{
         StringBuilder factura = new StringBuilder();
 
         factura.append("FACTURA ORDEN: ").append(idOrden).append("\n");
-        factura.append("ESTADO").append(estado).append("\n");
+        factura.append("ESTADO: ").append(estado).append("\n");
+
+        factura.append("Técnico encargado: ").append(tecnico.getNombre()).append("\n");
         factura.append("Cliente: ")
                 .append(vehiculo.getCliente().getNombre())
                 .append("\n");
@@ -116,7 +118,8 @@ public class OrdenTrabajo{
 
 
         factura.append("\nTOTAL: $")
-                .append(calcularCostoTotal());
+                .append(calcularCostoTotal())
+                .append("\n");
 
         return factura.toString();
     }
