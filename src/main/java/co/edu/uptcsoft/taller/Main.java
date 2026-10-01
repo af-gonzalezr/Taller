@@ -113,6 +113,27 @@ public class Main  {
                 consultarOrdenPorIdCLI,
                 consultarOrdenesClienteCLI);
 
+        //datos de prueba
+        // 1. Clientes (cedula, nombre, telefono, email)
+        controlRegistros.crearCliente("101010", "Carlos Perez", "3101234567", "carlos@gmail.com");
+        controlRegistros.crearCliente("202020", "Ana Gomez", "3209876543", "ana@gmail.com");
+
+        // 2. Tecnicos (cedula, nombre, especialidad)
+        controlRegistros.crearTecnico("808080", "Roberto Silva", "Electricidad");
+        controlRegistros.crearTecnico("909090", "Martha Ruiz", "Mecanica General");
+
+        // 3. Vehiculos (placa, marca, modeloAnio, idCliente, atributoEspecifico)
+        controlRegistros.crearAutomovil("ABC123", "Toyota", "2020", "101010", "4");
+        controlRegistros.crearMotocicleta("XYZ987", "Yamaha", "2022", "202020", "250");
+        controlRegistros.crearCamion("TRK456", "Volvo", "2019", "101010", "12.5");
+
+
+        controlOrdenes.crearOrden("ORD-1", "ABC123", "808080", "Falla en sistema eléctrico");
+        controlOrdenes.crearOrden("ORD-2", "XYZ987", "909090", "Mantenimiento preventivo 10k km");
+
+        // 5. Agregar un servicio de prueba a la primera orden (idOrden, nombreServicio, costo)
+        controlOrdenes.agregarServicio("ORD-1", "Cambio de batería", "180000");
+
         VistaMain vistaMain = new VistaMain(sc,registrosCLI,gestionCLI,consultasOrdenesCLI);
         vistaMain.mostrarMain();
     }

@@ -3,9 +3,7 @@ package co.edu.uptcsoft.taller.service.impl;
 import co.edu.uptcsoft.taller.model.EstadoOrden;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.repository.OrdenRepo;
-import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.service.FinalizarOrden;
-import co.edu.uptcsoft.taller.service.OrdenesTecnico;
 import co.edu.uptcsoft.taller.service.Respuesta;
 
 import java.time.LocalDateTime;
