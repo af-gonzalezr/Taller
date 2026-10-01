@@ -24,7 +24,7 @@ import co.edu.uptcsoft.taller.vista.cli.registros.*;
 import java.util.Scanner;
 
 public class Main  {
-    static void main(String[] args) {
+    static void main() {
         //repositorios
         Repository<Cliente> clienteRepository = new ClienteRepository();
         Repository<Vehiculo> vehiculoRepository = new VehiculoRepository();

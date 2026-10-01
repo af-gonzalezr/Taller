@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrdenTrabajo implements Comparable<OrdenTrabajo> {
+public class OrdenTrabajo{
     private final String idOrden;
     private final LocalDateTime fechaHoraIngreso;
     private LocalDateTime fechaHoraEntrega;
@@ -37,11 +37,6 @@ public class OrdenTrabajo implements Comparable<OrdenTrabajo> {
         return listaTrabajos.stream()
                 .mapToDouble(ServicioRealizado::getValor)
                 .sum();
-    }
-
-    @Override
-    public int compareTo(OrdenTrabajo otraOrden) {
-        return fechaHoraIngreso.compareTo(otraOrden.fechaHoraIngreso);
     }
 
     public String getIdOrden() {
