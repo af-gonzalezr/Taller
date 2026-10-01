@@ -1,10 +1,10 @@
 package co.edu.uptcsoft.taller.model;
 
 public abstract class Vehiculo {
-    private String placa;
-    private String marca;
-    private int modelo;
-    private Cliente cliente;
+    protected String placa;
+    protected String marca;
+    protected int modelo;
+    protected Cliente cliente;
 
     protected Vehiculo(String placa, String marca, int modelo, Cliente cliente) {
         this.placa = placa;
@@ -43,5 +43,16 @@ public abstract class Vehiculo {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Vehiculo{" +
+                "placa='" + placa + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo=" + modelo +
+                ", cliente=" + cliente +
+                '}';
     }
 }

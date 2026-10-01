@@ -15,4 +15,16 @@ public class Automovil extends Vehiculo {
     public void setNumeroPuertas(int numeroPuertas) {
         this.numeroPuertas = numeroPuertas;
     }
+
+
+    @Override
+    public String toString() {
+        return "Automovil{" +
+                "numeroPuertas=" + numeroPuertas +
+                ", placa='" + placa + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo=" + modelo +
+                ", cliente=" + cliente +
+                '}';
+    }
 }

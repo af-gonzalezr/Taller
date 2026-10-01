@@ -12,7 +12,14 @@ public class Motocicleta extends Vehiculo {
         return cilindraje;
     }
 
-    public void setCilindraje(int cilindraje) {
-        this.cilindraje = cilindraje;
+    @Override
+    public String toString() {
+        return "Motocicleta{" +
+                "placa='" + placa + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo=" + modelo +
+                ", cliente=" + cliente +
+                ", cilindraje=" + cilindraje +
+                '}';
     }
 }

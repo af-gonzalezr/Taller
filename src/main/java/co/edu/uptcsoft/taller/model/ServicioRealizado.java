@@ -24,4 +24,12 @@ public class ServicioRealizado {
     public void setValor(double valor) {
         this.valor = valor;
     }
+
+    @Override
+    public String toString() {
+        return "ServicioRealizado{" +
+                "descripcion='" + descripcion + '\'' +
+                ", valor=" + valor +
+                '}';
+    }
 }

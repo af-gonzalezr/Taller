@@ -13,4 +13,5 @@ public interface OrdenRepo {
     List<OrdenTrabajo> buscarPorCliente(String idCliente);
     List<OrdenTrabajo> buscarPorEstado(EstadoOrden estadoOrden);
     List<OrdenTrabajo> todas();
+
 }

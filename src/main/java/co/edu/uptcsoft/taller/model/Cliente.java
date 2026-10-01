@@ -21,20 +21,6 @@ public class Cliente {
         return nombre;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setInfo(String nombre, String telefono, String email){
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.email = email;
-    }
-
     @Override
     public String toString() {
         return "Cliente{" +

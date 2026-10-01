@@ -23,8 +23,12 @@ public class Tecnico {
         return especialidad;
     }
 
-    public void setInfo(String nombre, String especialidad){
-        this.nombre = nombre;
-        this.especialidad = especialidad;
+    @Override
+    public String toString() {
+        return "Tecnico{" +
+                "idTecnico='" + idTecnico + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", especialidad='" + especialidad + '\'' +
+                '}';
     }
 }
