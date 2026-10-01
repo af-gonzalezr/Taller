@@ -115,8 +115,8 @@ public class Main  {
 
         //datos de prueba
         // 1. Clientes (cedula, nombre, telefono, email)
-        controlRegistros.crearCliente("101010", "Carlos Perez", "3101234567", "carlos@gmail.com");
-        controlRegistros.crearCliente("202020", "Ana Gomez", "3209876543", "ana@gmail.com");
+        controlRegistros.crearCliente("1", "Carlos Perez", "3101234567", "carlos@gmail.com");
+        controlRegistros.crearCliente("2", "Ana Gomez", "3209876543", "ana@gmail.com");
 
         // 2. Tecnicos (cedula, nombre, especialidad)
         controlRegistros.crearTecnico("808080", "Roberto Silva", "Electricidad");
@@ -128,11 +128,11 @@ public class Main  {
         controlRegistros.crearCamion("TRK456", "Volvo", "2019", "101010", "12.5");
 
 
-        controlOrdenes.crearOrden("ORD-1", "ABC123", "808080", "Falla en sistema eléctrico");
-        controlOrdenes.crearOrden("ORD-2", "XYZ987", "909090", "Mantenimiento preventivo 10k km");
+        controlOrdenes.crearOrden("O1", "ABC123", "808080", "Falla en sistema eléctrico");
+        controlOrdenes.crearOrden("O2", "XYZ987", "909090", "Mantenimiento preventivo 10k km");
 
         // 5. Agregar un servicio de prueba a la primera orden (idOrden, nombreServicio, costo)
-        controlOrdenes.agregarServicio("ORD-1", "Cambio de batería", "180000");
+        controlOrdenes.agregarServicio("O1", "Cambio de batería", "180000");
 
         VistaMain vistaMain = new VistaMain(sc,registrosCLI,gestionCLI,consultasOrdenesCLI);
         vistaMain.mostrarMain();
