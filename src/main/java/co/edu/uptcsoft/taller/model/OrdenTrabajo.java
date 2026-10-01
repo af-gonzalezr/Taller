@@ -102,6 +102,13 @@ public class OrdenTrabajo{
                 .append(vehiculo.getPlaca())
                 .append("\n\n");
 
+        factura.append("Creado: ").append(fechaHoraIngreso).append("\n");
+    factura.append("Terminado: ");
+    if(estado!=EstadoOrden.FINALIZADA){
+        factura.append("La orden no esta finalizada").append("\n");
+    }else {
+        factura.append(fechaHoraEntrega).append("\n");
+    }
         factura.append("TRABAJOS:\n");
 
         if(listaTrabajos.isEmpty()){
