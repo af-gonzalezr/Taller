@@ -1,51 +1,42 @@
 package co.edu.uptcsoft.taller.repository.impl;
 
-import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.model.Tecnico;
 import co.edu.uptcsoft.taller.repository.Repository;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
-public class TecnicoRepository implements Repository<Tecnico>{
+public class TecnicoRepository implements Repository<Tecnico> {
 
-    private final ArrayList<Tecnico> tecnicos;
+    private final Map<String, Tecnico> tecnicos;
 
     public TecnicoRepository() {
-        tecnicos = new ArrayList<>();
+        this.tecnicos = new HashMap<>();
     }
-
 
     @Override
     public Tecnico guardar(Tecnico elemento) {
-
-        if(elemento == null){
+        if (elemento == null || elemento.getIdTecnico() == null || elemento.getIdTecnico().isBlank()) {
             return null;
         }
-
-        Optional<Tecnico> existente = buscarPorId(elemento.getIdTecnico());
-
-        if(existente.isPresent()){
-            int index = tecnicos.indexOf(existente.get());
-            tecnicos.set(index,elemento);
-        }else {
-            tecnicos.add(elemento);
-        }
+        tecnicos.put(elemento.getIdTecnico(), elemento);
         return elemento;
     }
 
     @Override
     public Optional<Tecnico> buscarPorId(String id) {
-        return tecnicos.stream()
-                .filter(t->t.getIdTecnico().equalsIgnoreCase(id))
-                .findFirst();
+        if (id == null || id.isBlank()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(tecnicos.get(id));
     }
 
     @Override
     public boolean eliminar(String id) {
-        if(id == null || id.isBlank()){
+        if (id == null || id.isBlank()) {
             return false;
         }
-        return tecnicos.removeIf(t->t.getIdTecnico().equalsIgnoreCase(id));
+        return tecnicos.remove(id) != null;
     }
 }
