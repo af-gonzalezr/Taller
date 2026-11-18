@@ -2,6 +2,7 @@ package co.edu.uptcsoft.taller.control;
 
 import co.edu.uptcsoft.taller.model.EstadoOrden;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
+import co.edu.uptcsoft.taller.exception.BusinessRuleException;
 import co.edu.uptcsoft.taller.service.*;
 
 import java.util.List;
@@ -23,33 +24,33 @@ public class ControlConsultas {
         this.ordenesEstado = ordenesEstado;
     }
 
-    public Respuesta<OrdenTrabajo> consultarOrdenPorId(String idOrden) {
+    public OrdenTrabajo consultarOrdenPorId(String idOrden) {
         if (estaVacio(idOrden)) {
-            return Respuesta.error("El campo idOrden esta vacío");
+            throw new BusinessRuleException("El campo idOrden esta vacío");
         }
         return buscarOrdenPorId.execute(idOrden.trim());
     }
 
-    public Respuesta<List<OrdenTrabajo>> consultarTodasLasOrdenes() {
+    public List<OrdenTrabajo> consultarTodasLasOrdenes() {
         return todasOrdenes.execute();
     }
 
-    public Respuesta<List<OrdenTrabajo>> consultarOrdenesCliente(String idCliente) {
+    public List<OrdenTrabajo> consultarOrdenesCliente(String idCliente) {
         if (estaVacio(idCliente)) {
-            return Respuesta.error("El campo idCliente esta vacío");
+            throw new BusinessRuleException("El campo idCliente esta vacío");
         }
         return ordenesCliente.execute(idCliente.trim());
     }
 
-    public Respuesta<List<OrdenTrabajo>> consultarOrdenesEnProceso() {
+    public List<OrdenTrabajo> consultarOrdenesEnProceso() {
         return ordenesEstado.execute(EstadoOrden.EN_PROCESO);
     }
 
-    public Respuesta<List<OrdenTrabajo>> consultarOrdenesFinalizadas() {
+    public List<OrdenTrabajo> consultarOrdenesFinalizadas() {
         return ordenesEstado.execute(EstadoOrden.FINALIZADA);
     }
 
-    public Respuesta<List<OrdenTrabajo>> consultarOrdenesCanceladas() {
+    public List<OrdenTrabajo> consultarOrdenesCanceladas() {
         return ordenesEstado.execute(EstadoOrden.CANCELADA);
     }
 

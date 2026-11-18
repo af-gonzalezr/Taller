@@ -1,9 +1,10 @@
 package co.edu.uptcsoft.taller.service.impl;
 
 import co.edu.uptcsoft.taller.model.*;
+import co.edu.uptcsoft.taller.exception.BusinessRuleException;
+import co.edu.uptcsoft.taller.exception.ResourceNotFoundException;
 import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.service.RegistrarCamion;
-import co.edu.uptcsoft.taller.service.Respuesta;
 
 import java.util.Optional;
 
@@ -17,21 +18,21 @@ public class RegistrarCamionImpl implements RegistrarCamion {
     }
 
     @Override
-    public Respuesta<Camion> execute(String placa, String marca, int modelo, String idCliente, double capacidadCargaTon) {
+    public Camion execute(String placa, String marca, int modelo, String idCliente, double capacidadCargaTon) {
 
         if (vehiculoRepository.buscarPorId(placa).isPresent()) {
-            return Respuesta.error("Placa ya registrada");
+            throw new BusinessRuleException("Placa ya registrada");
         }
 
         Optional<Cliente> cOpt = clienteRepository.buscarPorId(idCliente);
         if (cOpt.isEmpty()) {
-            return Respuesta.error("El cliente no existe");
+            throw new ResourceNotFoundException("El cliente no existe");
         }
 
         Cliente cliente = cOpt.get();
         Camion camion = new Camion(placa, marca, modelo, cliente, capacidadCargaTon);
         vehiculoRepository.guardar(camion);
 
-        return Respuesta.completado("Camión registrado exitosamente", camion);
+        return camion;
     }
 }

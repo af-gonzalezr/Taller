@@ -1,9 +1,9 @@
 package co.edu.uptcsoft.taller.service.impl;
 
+import co.edu.uptcsoft.taller.exception.BusinessRuleException;
 import co.edu.uptcsoft.taller.model.Tecnico;
 import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.service.RegistrarTecnico;
-import co.edu.uptcsoft.taller.service.Respuesta;
 
 public class RegistrarTecnicoImpl implements RegistrarTecnico {
 
@@ -14,12 +14,11 @@ public class RegistrarTecnicoImpl implements RegistrarTecnico {
     }
 
     @Override
-    public Respuesta<Tecnico> execute(String idTecnico, String nombre, String especialidad) {
+    public Tecnico execute(String idTecnico, String nombre, String especialidad) {
         if(tecnicoRepository.buscarPorId(idTecnico).isPresent()){
-            return Respuesta.error("Ya existe un técnico con esa id");
+            throw new BusinessRuleException("Ya existe un técnico con esa id");
         }
         Tecnico t = new Tecnico(idTecnico,nombre,especialidad);
-        return Respuesta.completado("Técnico registrado exitosamente",
-                tecnicoRepository.guardar(t));
+        return tecnicoRepository.guardar(t);
     }
 }

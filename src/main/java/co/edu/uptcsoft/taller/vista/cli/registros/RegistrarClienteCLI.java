@@ -1,7 +1,8 @@
 package co.edu.uptcsoft.taller.vista.cli.registros;
 
 import co.edu.uptcsoft.taller.control.ControlRegistros;
-import co.edu.uptcsoft.taller.vista.cli.RespuestaCLI;
+import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
 
@@ -31,11 +32,12 @@ public class RegistrarClienteCLI {
         System.out.println("Correo Electrónico:");
         String email = sc.nextLine();
 
-        RespuestaCLI.mostrarRespuesta(controlRegistros
-                .crearCliente(idCliente,
-                        nombre,
-                        telefono,
-                        email));
+        try {
+            ConsolaUtils.imprimirExito("Cliente registrado exitosamente",
+                    controlRegistros.crearCliente(idCliente, nombre, telefono, email));
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
+        }
     }
 
 

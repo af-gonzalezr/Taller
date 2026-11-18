@@ -1,7 +1,9 @@
 package co.edu.uptcsoft.taller.vista.cli.gestion;
 
 import co.edu.uptcsoft.taller.control.ControlOrdenes;
-import co.edu.uptcsoft.taller.vista.cli.RespuestaCLI;
+import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.model.OrdenTrabajo;
+import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
 
@@ -31,11 +33,16 @@ public class CrearOrdenCLI {
         System.out.println("Observaciones (opcional):");
         String observaciones = sc.nextLine();
 
-        RespuestaCLI.mostrarRespuesta(controlOrdenes.crearOrden(
-                idOrden,
-                placa,
-                idTecnico,
-                observaciones
-        ));
+        try {
+            OrdenTrabajo orden = controlOrdenes.crearOrden(
+                    idOrden,
+                    placa,
+                    idTecnico,
+                    observaciones
+            );
+            ConsolaUtils.imprimirExito("Orden registrada exitosamente", orden);
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
+        }
     }
 }

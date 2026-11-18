@@ -35,10 +35,10 @@ activate repositorio
 repositorio --> servicio : datos
 deactivate repositorio
 
-servicio --> control : Respuesta<T>
+servicio --> control : dominio o excepcion
 deactivate servicio
 
-control --> vista : Respuesta<T>
+control --> vista : dominio o excepcion
 deactivate control
 
 vista --> User : out

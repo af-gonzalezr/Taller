@@ -1,7 +1,8 @@
 package co.edu.uptcsoft.taller.vista.cli.gestion;
 
 import co.edu.uptcsoft.taller.control.ControlOrdenes;
-import co.edu.uptcsoft.taller.vista.cli.RespuestaCLI;
+import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
 
@@ -28,10 +29,11 @@ public class AgregarServicioCLI {
         System.out.println("Valor:");
         String valor = sc.nextLine();
 
-        RespuestaCLI.mostrarRespuesta(controlOrdenes.agregarServicio(
-                idOrden,
-                descripcion,
-                valor
-        ));
+        try {
+            ConsolaUtils.imprimirExito("Trabajo agregado exitosamente",
+                    controlOrdenes.agregarServicio(idOrden, descripcion, valor));
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
+        }
     }
 }

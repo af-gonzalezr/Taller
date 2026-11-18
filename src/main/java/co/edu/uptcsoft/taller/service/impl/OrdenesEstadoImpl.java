@@ -4,7 +4,6 @@ import co.edu.uptcsoft.taller.model.EstadoOrden;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.repository.OrdenRepo;
 import co.edu.uptcsoft.taller.service.OrdenesEstado;
-import co.edu.uptcsoft.taller.service.Respuesta;
 
 import java.util.List;
 
@@ -17,12 +16,7 @@ public class OrdenesEstadoImpl implements OrdenesEstado {
     }
 
     @Override
-    public Respuesta<List<OrdenTrabajo>> execute(EstadoOrden estadoOrden) {
-        List<OrdenTrabajo> ordenes = ordenRepository.buscarPorEstado(estadoOrden);
-        if (ordenes.isEmpty()){
-            return Respuesta.completado("No hay ordenes con estado: "+ estadoOrden.toString(),ordenes);
-        }else{
-            return Respuesta.completado("Ordenes con estado "+ estadoOrden.toString(),ordenes);
-        }
+    public List<OrdenTrabajo> execute(EstadoOrden estadoOrden) {
+        return ordenRepository.buscarPorEstado(estadoOrden);
     }
 }

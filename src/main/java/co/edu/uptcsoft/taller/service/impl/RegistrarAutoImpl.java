@@ -1,11 +1,12 @@
 package co.edu.uptcsoft.taller.service.impl;
 
+import co.edu.uptcsoft.taller.exception.BusinessRuleException;
+import co.edu.uptcsoft.taller.exception.ResourceNotFoundException;
 import co.edu.uptcsoft.taller.model.Automovil;
 import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.model.Vehiculo;
 import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.service.RegistrarAuto;
-import co.edu.uptcsoft.taller.service.Respuesta;
 
 import java.util.Optional;
 
@@ -20,20 +21,19 @@ public class RegistrarAutoImpl implements RegistrarAuto {
     }
 
     @Override
-    public Respuesta<Automovil> execute(String placa, String marca, int modelo, String idCliente, int numeroPuertas) {
+    public Automovil execute(String placa, String marca, int modelo, String idCliente, int numeroPuertas) {
 
         if(vehiculoRepository.buscarPorId(placa).isPresent()){
-            return Respuesta.error("Placa ya registrada");
+            throw new BusinessRuleException("Placa ya registrada");
         }
 
         Optional<Cliente> cOpt = clienteRepository.buscarPorId(idCliente);
         if (cOpt.isEmpty()){
-            return Respuesta.error("El cliente no existe");
+            throw new ResourceNotFoundException("El cliente no existe");
         }
         Cliente c = cOpt.get();
         Automovil a = new Automovil(placa, marca, modelo, c, numeroPuertas);
-        vehiculoRepository.guardar(a);
-        return Respuesta.completado("Automóvil registrado exitosamente",a);
+        return (Automovil) vehiculoRepository.guardar(a);
 
     }
 }

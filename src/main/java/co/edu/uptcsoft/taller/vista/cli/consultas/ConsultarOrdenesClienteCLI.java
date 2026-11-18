@@ -1,7 +1,8 @@
 package co.edu.uptcsoft.taller.vista.cli.consultas;
 
 import co.edu.uptcsoft.taller.control.ControlConsultas;
-import co.edu.uptcsoft.taller.vista.cli.RespuestaCLI;
+import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
 
@@ -21,6 +22,11 @@ public class ConsultarOrdenesClienteCLI {
         System.out.println("Ingrese la Identificación del Cliente:");
         String idCliente = sc.nextLine();
 
-        RespuestaCLI.mostrarRespuesta(controlConsultas.consultarOrdenesCliente(idCliente));
+        try {
+            ConsolaUtils.imprimirExito("Ordenes del cliente",
+                    controlConsultas.consultarOrdenesCliente(idCliente));
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
+        }
     }
 }

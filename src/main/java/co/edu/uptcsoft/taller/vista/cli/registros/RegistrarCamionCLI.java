@@ -1,7 +1,8 @@
 package co.edu.uptcsoft.taller.vista.cli.registros;
 
 import co.edu.uptcsoft.taller.control.ControlRegistros;
-import co.edu.uptcsoft.taller.vista.cli.RespuestaCLI;
+import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
 
@@ -34,12 +35,11 @@ public class RegistrarCamionCLI {
         System.out.println("Capacidad de Carga (Toneladas):");
         String capacidadCarga = sc.nextLine();
 
-        RespuestaCLI.mostrarRespuesta(controlRegistros.crearCamion(
-                placa,
-                marca,
-                modelo,
-                idCliente,
-                capacidadCarga
-        ));
+        try {
+            ConsolaUtils.imprimirExito("Camión registrado exitosamente",
+                    controlRegistros.crearCamion(placa, marca, modelo, idCliente, capacidadCarga));
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
+        }
     }
 }

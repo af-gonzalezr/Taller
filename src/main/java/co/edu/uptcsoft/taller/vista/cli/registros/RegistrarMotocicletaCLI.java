@@ -1,7 +1,9 @@
 package co.edu.uptcsoft.taller.vista.cli.registros;
 
 import co.edu.uptcsoft.taller.control.ControlRegistros;
-import co.edu.uptcsoft.taller.vista.cli.RespuestaCLI;
+import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.model.Motocicleta;
+import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
 
@@ -34,12 +36,17 @@ public class RegistrarMotocicletaCLI {
         System.out.println("Cilindraje (cc):");
         String cilindraje = sc.nextLine();
 
-        RespuestaCLI.mostrarRespuesta(controlRegistros.crearMotocicleta(
-                placa,
-                marca,
-                modelo,
-                idCliente,
-                cilindraje
-        ));
+        try {
+            Motocicleta motocicleta = controlRegistros.crearMotocicleta(
+                    placa,
+                    marca,
+                    modelo,
+                    idCliente,
+                    cilindraje
+            );
+            ConsolaUtils.imprimirExito("Moto registrada exitosamente", motocicleta);
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
+        }
     }
 }

@@ -1,7 +1,8 @@
 package co.edu.uptcsoft.taller.vista.cli.gestion;
 
 import co.edu.uptcsoft.taller.control.ControlOrdenes;
-import co.edu.uptcsoft.taller.vista.cli.RespuestaCLI;
+import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
 
@@ -24,9 +25,11 @@ public class FinalizarOrdenCLI {
         System.out.println("Observaciones de Finalización:");
         String observaciones = sc.nextLine();
 
-        RespuestaCLI.mostrarRespuesta(controlOrdenes.finalizarOrden(
-                idOrden,
-                observaciones
-        ));
+        try {
+            ConsolaUtils.imprimirExito("Orden finalizada exitosamente",
+                    controlOrdenes.finalizarOrden(idOrden, observaciones));
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
+        }
     }
 }

@@ -1,5 +1,7 @@
 package co.edu.uptcsoft.taller.service.impl;
 
+import co.edu.uptcsoft.taller.exception.BusinessRuleException;
+import co.edu.uptcsoft.taller.exception.ResourceNotFoundException;
 import co.edu.uptcsoft.taller.model.EstadoOrden;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.model.Tecnico;
@@ -7,7 +9,6 @@ import co.edu.uptcsoft.taller.model.Vehiculo;
 import co.edu.uptcsoft.taller.repository.OrdenRepo;
 import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.service.CrearOrdenTrabajo;
-import co.edu.uptcsoft.taller.service.Respuesta;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -25,20 +26,20 @@ public class CrearOrdenTrabajoImpl implements CrearOrdenTrabajo {
     }
 
     @Override
-    public Respuesta<OrdenTrabajo> execute(String idOrden,
+    public OrdenTrabajo execute(String idOrden,
                                            LocalDateTime fechaHoraIngreso,
                                            String idVehiculo,
                                            String idTecnico,
                                            String observacionesIngreso) {
         if(ordenTrabajoRepository.buscarPorId(idOrden).isPresent()){
-            return Respuesta.error("Ya existe una Orden con esa id");
+            throw new BusinessRuleException("Ya existe una Orden con esa id");
         }
         Optional<Tecnico> tOpt = tecnicoRepository.buscarPorId(idTecnico);
         Optional<Vehiculo> vOpt = vehiculoRepository.buscarPorId(idVehiculo);
         if(tOpt.isEmpty()){
-            return Respuesta.error("El técnico no existe");
+            throw new ResourceNotFoundException("El técnico no existe");
         } else if (vOpt.isEmpty()) {
-            return Respuesta.error("El vehiculo no existe");
+            throw new ResourceNotFoundException("El vehiculo no existe");
         }
         OrdenTrabajo o = new OrdenTrabajo(idOrden,
                 fechaHoraIngreso,
@@ -49,7 +50,6 @@ public class CrearOrdenTrabajoImpl implements CrearOrdenTrabajo {
                 observacionesIngreso,
                 "");
 
-        return Respuesta.completado("Orden registrada exitosamente",
-                ordenTrabajoRepository.guardar(o));
+        return ordenTrabajoRepository.guardar(o);
     }
 }

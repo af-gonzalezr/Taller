@@ -11,7 +11,6 @@ import co.edu.uptcsoft.taller.repository.impl.OrdenRepository;
 import co.edu.uptcsoft.taller.repository.impl.TecnicoRepository;
 import co.edu.uptcsoft.taller.repository.impl.VehiculoRepository;
 import co.edu.uptcsoft.taller.service.CrearOrdenTrabajo;
-import co.edu.uptcsoft.taller.service.Respuesta;
 import co.edu.uptcsoft.taller.service.impl.CrearOrdenTrabajoImpl;
 
 import java.time.LocalDateTime;
@@ -27,22 +26,22 @@ public class CrearOrdenTrabajoImplTest {
         // --- CASOS DE PRUEBA PARA REVISAR EN DEBUG ---
 
         // 1. Registro exitoso estándar
-        Respuesta<OrdenTrabajo> respuesta1 = servicio.execute("ORD-001", ahora, "ABC-123", "TEC-01", "Cambio de aceite");
+        OrdenTrabajo respuesta1 = servicio.execute("ORD-001", ahora, "ABC-123", "TEC-01", "Cambio de aceite");
 
         // 2. Error: ID de Orden ya existente
-        Respuesta<OrdenTrabajo> respuesta2 = servicio.execute("ORD-001", ahora, "DEF-456", "TEC-01", "Revisión de frenos");
+        OrdenTrabajo respuesta2 = servicio.execute("ORD-001", ahora, "DEF-456", "TEC-01", "Revisión de frenos");
 
         // 3. Error: Técnico no existe
-        Respuesta<OrdenTrabajo> respuesta3 = servicio.execute("ORD-002", ahora, "ABC-123", "TEC-99", "Alineación y balanceo");
+        OrdenTrabajo respuesta3 = servicio.execute("ORD-002", ahora, "ABC-123", "TEC-99", "Alineación y balanceo");
 
         // 4. Error: Vehículo no existe
-        Respuesta<OrdenTrabajo> respuesta4 = servicio.execute("ORD-003", ahora, "XYZ-999", "TEC-01", "Fallo en motor");
+        OrdenTrabajo respuesta4 = servicio.execute("ORD-003", ahora, "XYZ-999", "TEC-01", "Fallo en motor");
 
         // 5. Éxito: Segunda orden válida para diferente vehículo
-        Respuesta<OrdenTrabajo> respuesta5 = servicio.execute("ORD-004", ahora, "DEF-456", "TEC-01", "Mantenimiento general");
+        OrdenTrabajo respuesta5 = servicio.execute("ORD-004", ahora, "DEF-456", "TEC-01", "Mantenimiento general");
 
         // 6. Validación: Intento con campos vacíos/inexistentes en idTecnico e idVehiculo a la vez (falla primero en técnico por el flujo)
-        Respuesta<OrdenTrabajo> respuesta6 = servicio.execute("ORD-005", ahora, "", "", "Sin datos");
+        OrdenTrabajo respuesta6 = servicio.execute("ORD-005", ahora, "", "", "Sin datos");
 
         // Punto de parada (Breakpoint aquí)
         boolean fin = true;

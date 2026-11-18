@@ -1,9 +1,12 @@
 package co.edu.uptcsoft.taller.vista.cli.consultas;
 
 import co.edu.uptcsoft.taller.control.ControlConsultas;
-import co.edu.uptcsoft.taller.vista.cli.RespuestaCLI;
+import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class ConsultasOrdenesCLI {
 
@@ -38,14 +41,31 @@ public class ConsultasOrdenesCLI {
             String seleccion = sc.nextLine().trim();
             switch (seleccion) {
                 case "1" -> consultarOrdenPorIdCLI.execute();
-                case "2" -> RespuestaCLI.mostrarRespuesta(controlConsultas.consultarTodasLasOrdenes());
+                case "2" -> consultarTodas();
                 case "3" -> consultarOrdenesClienteCLI.execute();
-                case "4" -> RespuestaCLI.mostrarRespuesta(controlConsultas.consultarOrdenesEnProceso());
-                case "5" -> RespuestaCLI.mostrarRespuesta(controlConsultas.consultarOrdenesFinalizadas());
-                case "6" -> RespuestaCLI.mostrarRespuesta(controlConsultas.consultarOrdenesCanceladas());
+                case "4" -> consultarEstado("Ordenes en proceso", controlConsultas::consultarOrdenesEnProceso);
+                case "5" -> consultarEstado("Ordenes finalizadas", controlConsultas::consultarOrdenesFinalizadas);
+                case "6" -> consultarEstado("Ordenes canceladas", controlConsultas::consultarOrdenesCanceladas);
                 case "7" -> salir = true;
                 default -> System.out.println("Opción no valida");
             }
+
+        }
+    }
+
+    private void consultarTodas() {
+        try {
+            ConsolaUtils.imprimirExito("Ordenes registradas", controlConsultas.consultarTodasLasOrdenes());
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
+        }
+    }
+
+    private void consultarEstado(String mensaje, Supplier<List<co.edu.uptcsoft.taller.model.OrdenTrabajo>> consulta) {
+        try {
+            ConsolaUtils.imprimirExito(mensaje, consulta.get());
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
         }
     }
 }

@@ -1,7 +1,9 @@
 package co.edu.uptcsoft.taller.vista.cli.registros;
 
 import co.edu.uptcsoft.taller.control.ControlRegistros;
-import co.edu.uptcsoft.taller.vista.cli.RespuestaCLI;
+import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.model.Tecnico;
+import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
 
@@ -28,10 +30,15 @@ public class RegistrarTecnicoCLI {
         System.out.println("Especialidad:");
         String especialidad = sc.nextLine();
 
-        RespuestaCLI.mostrarRespuesta(controlRegistros.crearTecnico(
-                idTecnico,
-                nombre,
-                especialidad
-        ));
+        try {
+            Tecnico tecnico = controlRegistros.crearTecnico(
+                    idTecnico,
+                    nombre,
+                    especialidad
+            );
+            ConsolaUtils.imprimirExito("Técnico registrado exitosamente", tecnico);
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
+        }
     }
 }

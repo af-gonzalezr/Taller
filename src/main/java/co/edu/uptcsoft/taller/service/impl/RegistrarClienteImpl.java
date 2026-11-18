@@ -1,9 +1,9 @@
 package co.edu.uptcsoft.taller.service.impl;
 
+import co.edu.uptcsoft.taller.exception.BusinessRuleException;
 import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.service.RegistrarCliente;
-import co.edu.uptcsoft.taller.service.Respuesta;
 
 public class RegistrarClienteImpl implements RegistrarCliente {
 
@@ -14,14 +14,13 @@ public class RegistrarClienteImpl implements RegistrarCliente {
     }
 
     @Override
-    public Respuesta<Cliente> execute(String idCliente, String nombre, String telefono, String email) {
+    public Cliente execute(String idCliente, String nombre, String telefono, String email) {
         if(clienteRepository.buscarPorId(idCliente).isPresent()){
-            return Respuesta.error("Ya existe un cliente con esa id");
+            throw new BusinessRuleException("Ya existe un cliente con esa id");
         }
 
         Cliente c = new Cliente(idCliente,nombre,telefono,email);
         clienteRepository.guardar(c);
-        return Respuesta.completado("Cliente registrado exitosamente",
-               c);
+        return c;
     }
 }

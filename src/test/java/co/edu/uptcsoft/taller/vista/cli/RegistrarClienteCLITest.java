@@ -14,7 +14,7 @@ class RegistrarClienteCLITest {
     static void main() {
         Repository<Cliente> clienteRepository = new ClienteRepository();
         RegistrarCliente registrarCliente = new RegistrarClienteImpl(clienteRepository);
-        ControlRegistros controlRegistros = new ControlRegistros(registrarCliente);
+        ControlRegistros controlRegistros = new ControlRegistros(registrarCliente, null, null, null, null);
         Scanner sc = new Scanner(System.in);
         RegistrarClienteCLI registrarClienteCLI = new RegistrarClienteCLI(sc,controlRegistros);
         registrarCliente.execute("123","Andres","3143129803","a@email.com");

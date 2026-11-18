@@ -1,7 +1,9 @@
 package co.edu.uptcsoft.taller.vista.cli.registros;
 
 import co.edu.uptcsoft.taller.control.ControlRegistros;
-import co.edu.uptcsoft.taller.vista.cli.RespuestaCLI;
+import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.model.Automovil;
+import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
 
@@ -34,12 +36,17 @@ public class RegistrarAutomovilCLI {
         System.out.println("Número de Puertas:");
         String numeroPuertas = sc.nextLine();
 
-        RespuestaCLI.mostrarRespuesta(controlRegistros.crearAutomovil(
-                placa,
-                marca,
-                modelo,
-                idCliente,
-                numeroPuertas
-        ));
+        try {
+            Automovil automovil = controlRegistros.crearAutomovil(
+                    placa,
+                    marca,
+                    modelo,
+                    idCliente,
+                    numeroPuertas
+            );
+            ConsolaUtils.imprimirExito("Automóvil registrado exitosamente", automovil);
+        } catch (AppException e) {
+            ConsolaUtils.imprimirError(e.getMessage());
+        }
     }
 }
