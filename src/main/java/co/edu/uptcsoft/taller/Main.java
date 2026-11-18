@@ -4,6 +4,7 @@ import co.edu.uptcsoft.taller.controller.old.ControlConsultas;
 import co.edu.uptcsoft.taller.controller.old.ControlOrdenes;
 import co.edu.uptcsoft.taller.controller.old.ControlRegistros;
 import co.edu.uptcsoft.taller.model.Cliente;
+import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.model.Tecnico;
 import co.edu.uptcsoft.taller.model.Vehiculo;
 import co.edu.uptcsoft.taller.repository.Repository;
@@ -28,7 +29,7 @@ public class Main  {
         Repository<Cliente> clienteRepository = new ClienteRepository();
         Repository<Vehiculo> vehiculoRepository = new VehiculoRepository();
         Repository<Tecnico> tecnicoRepository = new TecnicoRepository();
-        OrdenRepo ordenRepository = new OrdenRepository();
+        Repository<OrdenTrabajo> ordenRepository = new OrdenRepository();
 
         //servicios casos de uso
         //registros

@@ -49,7 +49,7 @@ public class CrearOrdenTrabajoImplTest {
     private static CrearOrdenTrabajo setupDeRepositorios() {
         Repository<Vehiculo> vehiculoRepo = new VehiculoRepository();
         Repository<Tecnico> tecnicoRepo = new TecnicoRepository();
-        OrdenRepo ordenTrabajoRepo = new OrdenRepository();
+        Repository<OrdenTrabajo> ordenTrabajoRepo = new OrdenRepository();
 
         // Carga de datos base (Cliente, Vehículo y Técnico)
         Cliente cliente = new Cliente("12345", "Jorge", "911", "jorge@email.com");
