@@ -1,7 +1,7 @@
 package co.edu.uptcsoft.taller.vista.cli.registros;
 
-import co.edu.uptcsoft.taller.control.ControlRegistros;
-import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.controller.old.ControlRegistros;
+import co.edu.uptcsoft.taller.exception.TallerException;
 import co.edu.uptcsoft.taller.model.Tecnico;
 import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
@@ -37,7 +37,7 @@ public class RegistrarTecnicoCLI {
                     especialidad
             );
             ConsolaUtils.imprimirExito("Técnico registrado exitosamente", tecnico);
-        } catch (AppException e) {
+        } catch (TallerException e) {
             ConsolaUtils.imprimirError(e.getMessage());
         }
     }

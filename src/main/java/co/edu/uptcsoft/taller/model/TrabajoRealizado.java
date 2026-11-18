@@ -1,10 +1,10 @@
 package co.edu.uptcsoft.taller.model;
 
-public class ServicioRealizado {
+public class TrabajoRealizado {
     private String descripcion;
     private double valor;
 
-    public ServicioRealizado(String descripcion, double valor) {
+    public TrabajoRealizado(String descripcion, double valor) {
         this.descripcion = descripcion;
         this.valor = valor;
     }
@@ -27,7 +27,7 @@ public class ServicioRealizado {
 
     @Override
     public String toString() {
-        return "ServicioRealizado{" +
+        return "TrabajoRealizado{" +
                 "descripcion='" + descripcion + '\'' +
                 ", valor=" + valor +
                 '}';

@@ -4,8 +4,10 @@ import co.edu.uptcsoft.taller.model.Tecnico;
 import co.edu.uptcsoft.taller.repository.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class TecnicoRepository implements Repository<Tecnico> {
 
@@ -17,10 +19,10 @@ public class TecnicoRepository implements Repository<Tecnico> {
 
     @Override
     public Tecnico guardar(Tecnico elemento) {
-        if (elemento == null || elemento.getIdTecnico() == null || elemento.getIdTecnico().isBlank()) {
+        if (elemento == null || elemento.getId() == null || elemento.getId().isBlank()) {
             return null;
         }
-        tecnicos.put(elemento.getIdTecnico(), elemento);
+        tecnicos.put(elemento.getId(), elemento);
         return elemento;
     }
 
@@ -38,5 +40,20 @@ public class TecnicoRepository implements Repository<Tecnico> {
             return false;
         }
         return tecnicos.remove(id) != null;
+    }
+
+    @Override
+    public List<Tecnico> listar() {
+        return List.copyOf(tecnicos.values());
+    }
+
+    @Override
+    public List<Tecnico> filtrar(Predicate<Tecnico> criterio) {
+        if (criterio == null) {
+            return listar();
+        }
+        return tecnicos.values().stream()
+                .filter(criterio)
+                .toList();
     }
 }

@@ -1,7 +1,7 @@
 package co.edu.uptcsoft.taller.vista.cli.gestion;
 
-import co.edu.uptcsoft.taller.control.ControlOrdenes;
-import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.controller.old.ControlOrdenes;
+import co.edu.uptcsoft.taller.exception.TallerException;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
@@ -41,7 +41,7 @@ public class CrearOrdenCLI {
                     observaciones
             );
             ConsolaUtils.imprimirExito("Orden registrada exitosamente", orden);
-        } catch (AppException e) {
+        } catch (TallerException e) {
             ConsolaUtils.imprimirError(e.getMessage());
         }
     }

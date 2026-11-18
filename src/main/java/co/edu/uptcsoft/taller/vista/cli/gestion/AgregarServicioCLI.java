@@ -1,7 +1,7 @@
 package co.edu.uptcsoft.taller.vista.cli.gestion;
 
-import co.edu.uptcsoft.taller.control.ControlOrdenes;
-import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.controller.old.ControlOrdenes;
+import co.edu.uptcsoft.taller.exception.TallerException;
 import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
@@ -32,7 +32,7 @@ public class AgregarServicioCLI {
         try {
             ConsolaUtils.imprimirExito("Trabajo agregado exitosamente",
                     controlOrdenes.agregarServicio(idOrden, descripcion, valor));
-        } catch (AppException e) {
+        } catch (TallerException e) {
             ConsolaUtils.imprimirError(e.getMessage());
         }
     }

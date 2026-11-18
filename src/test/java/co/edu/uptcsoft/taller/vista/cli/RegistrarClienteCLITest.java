@@ -1,6 +1,6 @@
 package co.edu.uptcsoft.taller.vista.cli;
 
-import co.edu.uptcsoft.taller.control.ControlRegistros;
+import co.edu.uptcsoft.taller.controller.old.ControlRegistros;
 import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.repository.impl.ClienteRepository;

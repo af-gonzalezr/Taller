@@ -1,7 +1,7 @@
 package co.edu.uptcsoft.taller.vista.cli.consultas;
 
-import co.edu.uptcsoft.taller.control.ControlConsultas;
-import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.controller.old.ControlConsultas;
+import co.edu.uptcsoft.taller.exception.TallerException;
 import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
@@ -56,7 +56,7 @@ public class ConsultasOrdenesCLI {
     private void consultarTodas() {
         try {
             ConsolaUtils.imprimirExito("Ordenes registradas", controlConsultas.consultarTodasLasOrdenes());
-        } catch (AppException e) {
+        } catch (TallerException e) {
             ConsolaUtils.imprimirError(e.getMessage());
         }
     }
@@ -64,7 +64,7 @@ public class ConsultasOrdenesCLI {
     private void consultarEstado(String mensaje, Supplier<List<co.edu.uptcsoft.taller.model.OrdenTrabajo>> consulta) {
         try {
             ConsolaUtils.imprimirExito(mensaje, consulta.get());
-        } catch (AppException e) {
+        } catch (TallerException e) {
             ConsolaUtils.imprimirError(e.getMessage());
         }
     }

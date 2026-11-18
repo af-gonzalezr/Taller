@@ -1,18 +1,18 @@
 package co.edu.uptcsoft.taller.model;
 
 public class Tecnico {
-    private final String idTecnico;
+    private final String id;
     private String nombre;
     private String especialidad;
 
-    public Tecnico(String idTecnico, String nombre, String especialidad) {
-        this.idTecnico = idTecnico;
+    public Tecnico(String id, String nombre, String especialidad) {
+        this.id = id;
         this.nombre = nombre;
         this.especialidad = especialidad;
     }
 
-    public String getIdTecnico() {
-        return idTecnico;
+    public String getId() {
+        return id;
     }
 
     public String getNombre() {
@@ -26,7 +26,7 @@ public class Tecnico {
     @Override
     public String toString() {
         return "Tecnico{" +
-                "idTecnico='" + idTecnico + '\'' +
+                "idTecnico='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", especialidad='" + especialidad + '\'' +
                 '}';

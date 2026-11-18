@@ -1,7 +1,7 @@
 package co.edu.uptcsoft.taller.service.impl;
 
-import co.edu.uptcsoft.taller.exception.BusinessRuleException;
-import co.edu.uptcsoft.taller.exception.ResourceNotFoundException;
+import co.edu.uptcsoft.taller.exception.ServiceException;
+import co.edu.uptcsoft.taller.exception.ElementoNoEncontradoException;
 import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.model.Motocicleta;
 import co.edu.uptcsoft.taller.model.Vehiculo;
@@ -25,13 +25,13 @@ public class RegistrarMotoImpl implements RegistrarMoto {
     public Motocicleta execute(String placa, String marca, int modelo, String idCliente, int cilindraje) {
 
         if(vehiculoRepository.buscarPorId(placa).isPresent()){
-            throw new BusinessRuleException("La placa ya esta en uso");
+            throw new ServiceException("La placa ya esta en uso");
         }
 
         Optional<Cliente> cOpt = clienteRepository.buscarPorId(idCliente);
 
         if (cOpt.isEmpty()){
-            throw new ResourceNotFoundException("El cliente no existe");
+            throw new ElementoNoEncontradoException("El cliente no existe");
         }
 
         Cliente c = cOpt.get();

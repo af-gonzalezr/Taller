@@ -4,8 +4,10 @@ import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.repository.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class ClienteRepository implements Repository<Cliente> {
 
@@ -17,10 +19,10 @@ public class ClienteRepository implements Repository<Cliente> {
 
     @Override
     public Cliente guardar(Cliente elemento) {
-        if (elemento == null || elemento.getIdCliente() == null || elemento.getIdCliente().isBlank()) {
+        if (elemento == null || elemento.getId() == null || elemento.getId().isBlank()) {
             return null;
         }
-        clientes.put(elemento.getIdCliente(), elemento);
+        clientes.put(elemento.getId(), elemento);
         return elemento;
     }
 
@@ -38,5 +40,20 @@ public class ClienteRepository implements Repository<Cliente> {
             return false;
         }
         return clientes.remove(id) != null;
+    }
+
+    @Override
+    public List<Cliente> listar() {
+        return List.copyOf(clientes.values());
+    }
+
+    @Override
+    public List<Cliente> filtrar(Predicate<Cliente> criterio) {
+        if (criterio == null) {
+            return listar();
+        }
+        return clientes.values().stream()
+                .filter(criterio)
+                .toList();
     }
 }

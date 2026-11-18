@@ -1,7 +1,7 @@
 package co.edu.uptcsoft.taller.vista.cli.consultas;
 
-import co.edu.uptcsoft.taller.control.ControlConsultas;
-import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.controller.old.ControlConsultas;
+import co.edu.uptcsoft.taller.exception.TallerException;
 import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
@@ -25,7 +25,7 @@ public class ConsultarOrdenesClienteCLI {
         try {
             ConsolaUtils.imprimirExito("Ordenes del cliente",
                     controlConsultas.consultarOrdenesCliente(idCliente));
-        } catch (AppException e) {
+        } catch (TallerException e) {
             ConsolaUtils.imprimirError(e.getMessage());
         }
     }

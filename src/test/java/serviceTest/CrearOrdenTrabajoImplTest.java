@@ -5,7 +5,6 @@ import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.model.Tecnico;
 import co.edu.uptcsoft.taller.model.Vehiculo;
-import co.edu.uptcsoft.taller.repository.OrdenRepo;
 import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.repository.impl.OrdenRepository;
 import co.edu.uptcsoft.taller.repository.impl.TecnicoRepository;

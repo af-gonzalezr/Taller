@@ -1,7 +1,7 @@
 package co.edu.uptcsoft.taller.vista.cli.registros;
 
-import co.edu.uptcsoft.taller.control.ControlRegistros;
-import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.controller.old.ControlRegistros;
+import co.edu.uptcsoft.taller.exception.TallerException;
 import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
@@ -38,7 +38,7 @@ public class RegistrarCamionCLI {
         try {
             ConsolaUtils.imprimirExito("Camión registrado exitosamente",
                     controlRegistros.crearCamion(placa, marca, modelo, idCliente, capacidadCarga));
-        } catch (AppException e) {
+        } catch (TallerException e) {
             ConsolaUtils.imprimirError(e.getMessage());
         }
     }

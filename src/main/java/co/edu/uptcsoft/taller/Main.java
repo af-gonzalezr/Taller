@@ -1,12 +1,11 @@
 package co.edu.uptcsoft.taller;
 
-import co.edu.uptcsoft.taller.control.ControlConsultas;
-import co.edu.uptcsoft.taller.control.ControlOrdenes;
-import co.edu.uptcsoft.taller.control.ControlRegistros;
+import co.edu.uptcsoft.taller.controller.old.ControlConsultas;
+import co.edu.uptcsoft.taller.controller.old.ControlOrdenes;
+import co.edu.uptcsoft.taller.controller.old.ControlRegistros;
 import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.model.Tecnico;
 import co.edu.uptcsoft.taller.model.Vehiculo;
-import co.edu.uptcsoft.taller.repository.OrdenRepo;
 import co.edu.uptcsoft.taller.repository.Repository;
 import co.edu.uptcsoft.taller.repository.impl.ClienteRepository;
 import co.edu.uptcsoft.taller.repository.impl.OrdenRepository;
@@ -48,7 +47,7 @@ public class Main  {
         //consulta de ordenes
         OrdenesCliente ordenesCliente = new OrdenesClienteImpl(clienteRepository,ordenRepository);
         OrdenesEstado ordenesEstado = new OrdenesEstadoImpl(ordenRepository);
-        TodasOrdenes todasOrdenes = new TodasOrdenesImpl(ordenRepository);
+        ListarOrdenes listarOrdenes = new ListarOrdenesImpl(ordenRepository);
         BuscarOrden buscarOrden = new BuscarOrdenImpl(ordenRepository);
 
         //controladores
@@ -65,7 +64,7 @@ public class Main  {
                 agregarTrabajoAOrden);
 
         ControlConsultas controlConsultas = new ControlConsultas(buscarOrden,
-                todasOrdenes,
+                listarOrdenes,
                 ordenesCliente,
                 ordenesEstado);
 

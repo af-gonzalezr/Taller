@@ -4,8 +4,10 @@ import co.edu.uptcsoft.taller.model.Vehiculo;
 import co.edu.uptcsoft.taller.repository.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class VehiculoRepository implements Repository<Vehiculo> {
 
@@ -39,5 +41,20 @@ public class VehiculoRepository implements Repository<Vehiculo> {
             return false;
         }
         return vehiculos.remove(id.trim().toUpperCase()) != null;
+    }
+
+    @Override
+    public List<Vehiculo> listar() {
+        return List.copyOf(vehiculos.values());
+    }
+
+    @Override
+    public List<Vehiculo> filtrar(Predicate<Vehiculo> criterio) {
+        if (criterio == null) {
+            return listar();
+        }
+        return vehiculos.values().stream()
+                .filter(criterio)
+                .toList();
     }
 }

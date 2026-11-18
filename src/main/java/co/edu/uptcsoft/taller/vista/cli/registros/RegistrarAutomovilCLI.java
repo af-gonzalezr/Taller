@@ -1,7 +1,7 @@
 package co.edu.uptcsoft.taller.vista.cli.registros;
 
-import co.edu.uptcsoft.taller.control.ControlRegistros;
-import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.controller.old.ControlRegistros;
+import co.edu.uptcsoft.taller.exception.TallerException;
 import co.edu.uptcsoft.taller.model.Automovil;
 import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
@@ -45,7 +45,7 @@ public class RegistrarAutomovilCLI {
                     numeroPuertas
             );
             ConsolaUtils.imprimirExito("Automóvil registrado exitosamente", automovil);
-        } catch (AppException e) {
+        } catch (TallerException e) {
             ConsolaUtils.imprimirError(e.getMessage());
         }
     }

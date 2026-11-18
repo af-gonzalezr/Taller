@@ -9,10 +9,10 @@ Proyecto desarrollado en Java aplicando una arquitectura multicapa (Vista, Contr
 El sistema está dividido en los siguientes paquetes:
 
 * **`co.edu.uptcsoft.taller.vista`**: Interfaz de usuario en consola (`VistaCLI`) encargada del flujo de entrada y salida (`System.out` / `System.err`)[cite: 14, 15].
-* **`co.edu.uptcsoft.taller.control`**: Controladores que reciben las peticiones de la vista y delegan la ejecución[cite: 14, 15].
+* **`controller`**: Controladores que reciben las peticiones de la vista y delegan la ejecución[cite: 14, 15].
 * **`co.edu.uptcsoft.taller.service`**: Capa de lógica de negocio que procesa las solicitudes y retorna los resultados envueltos en el record `Respuesta<T>`[cite: 14, 15].
 * **`co.edu.uptcsoft.taller.repository`**: Persistencia en memoria utilizando estructuras de datos (`List<T>`) y consultas con `Optional<T>`[cite: 14, 15].
-* **`co.edu.uptcsoft.taller.model`**: Entidades del dominio (`Vehiculo`, `Automovil`, `Camion`, `Motocicleta`, `Cliente`, `Tecnico`, `OrdenTrabajo`, `ServicioRealizado`, `EstadoOrden`)[cite: 1, 2, 3, 4, 5, 7, 8, 9, 10, 15].
+* **`co.edu.uptcsoft.taller.model`**: Entidades del dominio (`Vehiculo`, `Automovil`, `Camion`, `Motocicleta`, `Cliente`, `Tecnico`, `OrdenTrabajo`, `TrabajoRealizado`, `EstadoOrden`)[cite: 1, 2, 3, 4, 5, 7, 8, 9, 10, 15].
 
 ---
 

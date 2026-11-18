@@ -1,15 +1,15 @@
 package co.edu.uptcsoft.taller.repository.impl;
 
-import co.edu.uptcsoft.taller.model.EstadoOrden;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
-import co.edu.uptcsoft.taller.repository.OrdenRepo;
+import co.edu.uptcsoft.taller.repository.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
-public class OrdenRepository implements OrdenRepo {
+public class OrdenRepository implements Repository<OrdenTrabajo> {
 
     private final Map<String, OrdenTrabajo> ordenes;
 
@@ -22,7 +22,6 @@ public class OrdenRepository implements OrdenRepo {
         if (elemento == null || elemento.getIdOrden() == null || elemento.getIdOrden().isBlank()) {
             return null;
         }
-        // Inserta o sobrescribe automáticamente si el idOrden ya existe
         ordenes.put(elemento.getIdOrden(), elemento);
         return elemento;
     }
@@ -44,29 +43,17 @@ public class OrdenRepository implements OrdenRepo {
     }
 
     @Override
-    public List<OrdenTrabajo> buscarPorCliente(String idCliente) {
-        if (idCliente == null || idCliente.isBlank()) {
-            return List.of();
-        }
-        return ordenes.values().stream()
-                .filter(o -> o.getVehiculo() != null
-                        && o.getVehiculo().getCliente() != null
-                        && idCliente.equalsIgnoreCase(o.getVehiculo().getCliente().getIdCliente()))
-                .toList();
-    }
-
-    @Override
-    public List<OrdenTrabajo> buscarPorEstado(EstadoOrden estadoOrden) {
-        if (estadoOrden == null) {
-            return List.of();
-        }
-        return ordenes.values().stream()
-                .filter(o -> o.getEstado() == estadoOrden)
-                .toList();
-    }
-
-    @Override
-    public List<OrdenTrabajo> todas() {
+    public List<OrdenTrabajo> listar() {
         return List.copyOf(ordenes.values());
+    }
+
+    @Override
+    public List<OrdenTrabajo> filtrar(Predicate<OrdenTrabajo> criterio) {
+        if (criterio == null) {
+            return listar();
+        }
+        return ordenes.values().stream()
+                .filter(criterio)
+                .toList();
     }
 }

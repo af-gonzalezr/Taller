@@ -1,9 +1,13 @@
 package co.edu.uptcsoft.taller.repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public interface Repository<T> {
     T guardar(T elemento);
     Optional<T> buscarPorId(String id);
     boolean eliminar(String id);
+    List<T> listar();
+    List<T> filtrar(Predicate<T> criterio);
 }

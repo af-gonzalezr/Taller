@@ -1,9 +1,9 @@
 package co.edu.uptcsoft.taller.service;
 
-import co.edu.uptcsoft.taller.model.ServicioRealizado;
+import co.edu.uptcsoft.taller.model.TrabajoRealizado;
 
 public interface AgregarTrabajoAOrden {
-    ServicioRealizado execute(String idOrden,
-                                         String descripcion,
-                                         double valor);
+    TrabajoRealizado execute(String idOrden,
+                             String descripcion,
+                             double valor);
 }

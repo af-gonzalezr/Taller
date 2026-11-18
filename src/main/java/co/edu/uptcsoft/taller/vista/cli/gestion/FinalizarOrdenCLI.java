@@ -1,7 +1,7 @@
 package co.edu.uptcsoft.taller.vista.cli.gestion;
 
-import co.edu.uptcsoft.taller.control.ControlOrdenes;
-import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.controller.old.ControlOrdenes;
+import co.edu.uptcsoft.taller.exception.TallerException;
 import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
@@ -28,7 +28,7 @@ public class FinalizarOrdenCLI {
         try {
             ConsolaUtils.imprimirExito("Orden finalizada exitosamente",
                     controlOrdenes.finalizarOrden(idOrden, observaciones));
-        } catch (AppException e) {
+        } catch (TallerException e) {
             ConsolaUtils.imprimirError(e.getMessage());
         }
     }

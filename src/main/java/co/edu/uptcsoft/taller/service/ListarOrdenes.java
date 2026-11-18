@@ -4,6 +4,6 @@ import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 
 import java.util.List;
 
-public interface TodasOrdenes {
+public interface ListarOrdenes {
     List<OrdenTrabajo> execute();
 }

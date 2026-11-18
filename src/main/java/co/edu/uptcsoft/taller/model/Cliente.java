@@ -1,20 +1,20 @@
 package co.edu.uptcsoft.taller.model;
 
 public class Cliente {
-    private final String idCliente;
+    private final String id;
     private String nombre;
     private String telefono;
     private String email;
 
-    public Cliente(String idCliente, String nombre, String telefono, String email) {
-        this.idCliente = idCliente;
+    public Cliente(String id, String nombre, String telefono, String email) {
+        this.id = id;
         this.nombre = nombre;
         this.telefono = telefono;
         this.email = email;
     }
 
-    public String getIdCliente() {
-        return idCliente;
+    public String getId() {
+        return id;
     }
 
     public String getNombre() {
@@ -24,7 +24,7 @@ public class Cliente {
     @Override
     public String toString() {
         return "Cliente{" +
-                "idCliente='" + idCliente + '\'' +
+                "idCliente='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", email='" + email + '\'' +

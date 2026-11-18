@@ -1,7 +1,7 @@
 package co.edu.uptcsoft.taller.vista.cli.registros;
 
-import co.edu.uptcsoft.taller.control.ControlRegistros;
-import co.edu.uptcsoft.taller.exception.AppException;
+import co.edu.uptcsoft.taller.controller.old.ControlRegistros;
+import co.edu.uptcsoft.taller.exception.TallerException;
 import co.edu.uptcsoft.taller.vista.cli.ConsolaUtils;
 
 import java.util.Scanner;
@@ -35,7 +35,7 @@ public class RegistrarClienteCLI {
         try {
             ConsolaUtils.imprimirExito("Cliente registrado exitosamente",
                     controlRegistros.crearCliente(idCliente, nombre, telefono, email));
-        } catch (AppException e) {
+        } catch (TallerException e) {
             ConsolaUtils.imprimirError(e.getMessage());
         }
     }
