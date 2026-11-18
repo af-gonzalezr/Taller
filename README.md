@@ -2,6 +2,8 @@
 
 Aplicacion Java para gestionar clientes, tecnicos, vehiculos y ordenes de trabajo de un taller mecanico. La interfaz principal es una aplicacion de escritorio Swing; el proyecto conserva ademas una interfaz CLI antigua bajo `vista/cli` y controladores antiguos bajo `controller/old`.
 
+> **Version actual: GUI Swing.** Los paquetes `vista/cli` y `controller/old` corresponden a versiones anteriores del proyecto y se mantienen solo como referencia o compatibilidad de la CLI. `Main.java` ya no inicia `VistaMain`; inicia `VentanaPrincipal` y conecta las implementaciones concretas de `controller/impl`.
+
 ## Indice
 
 1. [Resumen funcional](#resumen-funcional)
@@ -246,6 +248,29 @@ Los nombres son expresivos y cada `execute(...)` representa una accion completa 
 
 Contiene la interfaz de consola anterior. `VistaMain` presenta un menu, pero `Main` actual no lo inicia. Se conserva para apoyar compatibilidad o migracion gradual.
 
+### Codigo de versiones anteriores
+
+Los siguientes elementos son codigo legacy:
+
+- `controller/old/ControlRegistros.java`
+- `controller/old/ControlOrdenes.java`
+- `controller/old/ControlConsultas.java`
+- `vista/cli/**`
+- `vista/VistaMain.java`
+
+No deben usarse como referencia para implementar nuevas operaciones de Swing. La arquitectura vigente usa:
+
+```text
+Panel Swing
+  -> Controller interface
+  -> ControllerImpl
+  -> Service interface
+  -> ServiceImpl
+  -> Repository
+```
+
+La migracion desde CLI a Swing no cambia los casos de uso de `service`; crea una nueva entrada de vista y delega los metodos concretos a las implementaciones actuales de los controladores.
+
 ### Excepciones
 
 | Clase | Nivel | Uso |
@@ -255,7 +280,7 @@ Contiene la interfaz de consola anterior. `VistaMain` presenta un menu, pero `Ma
 | `ElementoNoEncontradoException` | Negocio | Entidad requerida que no existe. |
 | `ServiceException` | Negocio | Reglas o estados invalidos. |
 
-`ServiceException`, `ElementNoEncontradoException` y `ValidationException` son excepciones no comprobadas porque heredan de `TallerException`, que hereda de `RuntimeException`.
+`ServiceException`, `ElementoNoEncontradoException` y `ValidationException` son excepciones no comprobadas porque heredan de `TallerException`, que hereda de `RuntimeException`.
 
 ## Modelo de dominio
 
@@ -498,8 +523,8 @@ Las pruebas JUnit se encuentran en `src/test/java`.
 | Ruta | Tipo |
 |---|---|
 | `co/edu/uptcsoft/taller/controller/impl/*Test.java` | Pruebas unitarias planas de controladores y validacion. |
-| `serviceTest/*Test.java` | Pruebas manuales o historicas de servicios. |
-| `vista/cli/*Test.java` | Pruebas manuales relacionadas con la CLI. |
+| `serviceTest/*Test.java` | Pruebas manuales o historicas de servicios; no forman el flujo activo de Swing. |
+| `vista/cli/*Test.java` | Pruebas manuales relacionadas con la CLI legacy. |
 
 Las pruebas de controladores deben seguir este orden:
 
