@@ -1,8 +1,9 @@
 package co.edu.uptcsoft.taller;
 
-import co.edu.uptcsoft.taller.controller.old.ControlConsultas;
-import co.edu.uptcsoft.taller.controller.old.ControlOrdenes;
-import co.edu.uptcsoft.taller.controller.old.ControlRegistros;
+import co.edu.uptcsoft.taller.controller.impl.ClienteControllerImpl;
+import co.edu.uptcsoft.taller.controller.impl.OrdenControllerImpl;
+import co.edu.uptcsoft.taller.controller.impl.TecnicoControllerImpl;
+import co.edu.uptcsoft.taller.controller.impl.VehiculoControllerImpl;
 import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.model.Tecnico;
@@ -14,127 +15,86 @@ import co.edu.uptcsoft.taller.repository.impl.TecnicoRepository;
 import co.edu.uptcsoft.taller.repository.impl.VehiculoRepository;
 import co.edu.uptcsoft.taller.service.*;
 import co.edu.uptcsoft.taller.service.impl.*;
-import co.edu.uptcsoft.taller.vista.VistaMain;
-import co.edu.uptcsoft.taller.vista.cli.consultas.ConsultarOrdenPorIdCLI;
-import co.edu.uptcsoft.taller.vista.cli.consultas.ConsultarOrdenesClienteCLI;
-import co.edu.uptcsoft.taller.vista.cli.consultas.ConsultasOrdenesCLI;
-import co.edu.uptcsoft.taller.vista.cli.gestion.*;
-import co.edu.uptcsoft.taller.vista.cli.registros.*;
+import co.edu.uptcsoft.taller.vista.gui.VentanaPrincipal;
 
-import java.util.Scanner;
+import javax.swing.SwingUtilities;
+import java.time.LocalDateTime;
 
-public class Main  {
-    static void main() {
-        //repositorios
+public class Main {
+    public static void main(String[] args) {
         Repository<Cliente> clienteRepository = new ClienteRepository();
         Repository<Vehiculo> vehiculoRepository = new VehiculoRepository();
         Repository<Tecnico> tecnicoRepository = new TecnicoRepository();
         Repository<OrdenTrabajo> ordenRepository = new OrdenRepository();
 
-        //servicios casos de uso
-        //registros
         RegistrarCliente registrarCliente = new RegistrarClienteImpl(clienteRepository);
         RegistrarTecnico registrarTecnico = new RegistrarTecnicoImpl(tecnicoRepository);
-        RegistrarAuto registrarAuto = new RegistrarAutoImpl(clienteRepository,vehiculoRepository);
-        RegistrarMoto registrarMoto = new RegistrarMotoImpl(vehiculoRepository,clienteRepository);
+        RegistrarAuto registrarAuto = new RegistrarAutoImpl(clienteRepository, vehiculoRepository);
+        RegistrarMoto registrarMoto = new RegistrarMotoImpl(vehiculoRepository, clienteRepository);
         RegistrarCamion registrarCamion = new RegistrarCamionImpl(clienteRepository, vehiculoRepository);
+        BuscarCliente buscarCliente = new BuscarClienteImpl(clienteRepository);
+        BuscarTecnico buscarTecnico = new BuscarTecnicoImpl(tecnicoRepository);
+        ListarClientes listarClientes = new ListarClientesImpl(clienteRepository);
+        ListarTecnicos listarTecnicos = new ListarTecnicosImpl(tecnicoRepository);
+        BuscarVehiculo buscarVehiculo = new BuscarVehiculoImpl(vehiculoRepository);
+        VehiculosCliente vehiculosCliente = new VehiculosClienteImpl(clienteRepository, vehiculoRepository);
 
-        //gestion
-        CrearOrdenTrabajo crearOrdenTrabajo = new CrearOrdenTrabajoImpl(vehiculoRepository,tecnicoRepository,ordenRepository);
+        CrearOrdenTrabajo crearOrdenTrabajo = new CrearOrdenTrabajoImpl(
+                vehiculoRepository, tecnicoRepository, ordenRepository);
         AgregarTrabajoAOrden agregarTrabajoAOrden = new AgregarTrabajoAOrdenImpl(ordenRepository);
+        QuitarTrabajoDeOrden quitarTrabajoDeOrden = new QuitarTrabajoDeOrdenImpl(ordenRepository);
+        ReasignarTecnicoOrden reasignarTecnicoOrden =
+                new ReasignarTecnicoOrdenImpl(ordenRepository, tecnicoRepository);
         FinalizarOrden finalizarOrden = new FinalizarOrdenImpl(ordenRepository);
         CancelarOrden cancelarOrden = new CancelarOrdenImpl(ordenRepository);
-
-        //consulta de ordenes
-        OrdenesCliente ordenesCliente = new OrdenesClienteImpl(clienteRepository,ordenRepository);
-        OrdenesEstado ordenesEstado = new OrdenesEstadoImpl(ordenRepository);
-        ListarOrdenes listarOrdenes = new ListarOrdenesImpl(ordenRepository);
         BuscarOrden buscarOrden = new BuscarOrdenImpl(ordenRepository);
+        ListarOrdenes listarOrdenes = new ListarOrdenesImpl(ordenRepository);
+        OrdenesCliente ordenesCliente = new OrdenesClienteImpl(clienteRepository, ordenRepository);
+        OrdenesEstado ordenesEstado = new OrdenesEstadoImpl(ordenRepository);
+        OrdenesTecnico ordenesTecnico = new OrdenesTecnicoImpl(ordenRepository, tecnicoRepository);
+        OrdenesVehiculo ordenesVehiculo =
+                new OrdenesVehiculoImpl(ordenRepository, vehiculoRepository);
 
-        //controladores
-
-        ControlRegistros controlRegistros = new ControlRegistros(registrarCliente,
-                registrarTecnico,
-                registrarAuto,
-                registrarMoto,
-                registrarCamion);
-
-        ControlOrdenes controlOrdenes = new ControlOrdenes(crearOrdenTrabajo,
+        ClienteControllerImpl clienteController = new ClienteControllerImpl(
+                registrarCliente, buscarCliente, listarClientes);
+        TecnicoControllerImpl tecnicoController = new TecnicoControllerImpl(
+                registrarTecnico, buscarTecnico, listarTecnicos);
+        VehiculoControllerImpl vehiculoController = new VehiculoControllerImpl(
+                registrarAuto, registrarMoto, registrarCamion, buscarVehiculo, vehiculosCliente);
+        OrdenControllerImpl ordenController = new OrdenControllerImpl(
+                crearOrdenTrabajo,
+                agregarTrabajoAOrden,
+                quitarTrabajoDeOrden,
+                reasignarTecnicoOrden,
                 finalizarOrden,
                 cancelarOrden,
-                agregarTrabajoAOrden);
-
-        ControlConsultas controlConsultas = new ControlConsultas(buscarOrden,
+                buscarOrden,
                 listarOrdenes,
                 ordenesCliente,
-                ordenesEstado);
+                ordenesEstado,
+                ordenesTecnico,
+                ordenesVehiculo);
 
+        clienteController.registrar("101010", "Carlos Perez", "3101234567", "carlos@gmail.com");
+        clienteController.registrar("202020", "Ana Gomez", "3209876543", "ana@gmail.com");
+        tecnicoController.registrar("808080", "Roberto Silva", "Electricidad");
+        tecnicoController.registrar("909090", "Martha Ruiz", "Mecanica General");
+        vehiculoController.registrarAuto("ABC123", "Toyota", "2020", "101010", "4");
+        vehiculoController.registrarMoto("XYZ987", "Yamaha", "2022", "202020", "250");
+        vehiculoController.registrarCamion("TRK456", "Volvo", "2019", "101010", "12.5");
+        ordenController.crear("ORD-1", LocalDateTime.now().toString(),
+                "ABC123", "808080", "Falla en sistema eléctrico");
+        ordenController.crear("ORD-2", LocalDateTime.now().toString(),
+                "XYZ987", "909090", "Mantenimiento preventivo 10k km");
+        ordenController.agregarTrabajo("ORD-1", "Cambio de batería", "180000");
 
-        //menus
-
-        Scanner sc = new Scanner(System.in);
-        //registro
-
-        
-        RegistrarClienteCLI registrarClienteCLI = new RegistrarClienteCLI(sc,controlRegistros);
-        RegistrarTecnicoCLI registrarTecnicoCLI = new RegistrarTecnicoCLI(sc,controlRegistros);
-        
-        RegistrarAutomovilCLI registrarAutomovilCLI = new RegistrarAutomovilCLI(sc,controlRegistros);
-        RegistrarMotocicletaCLI registrarMotocicletaCLI = new RegistrarMotocicletaCLI(sc,controlRegistros);
-        RegistrarCamionCLI registrarCamionCLI = new RegistrarCamionCLI(sc,controlRegistros);
-        
-        RegistrarVehiculoCLI registrarVehiculoCLI = new RegistrarVehiculoCLI(sc,
-                registrarAutomovilCLI,
-                registrarMotocicletaCLI,
-                registrarCamionCLI);
-        
-        
-        RegistrosCLI registrosCLI = new RegistrosCLI(sc,registrarClienteCLI,registrarTecnicoCLI,registrarVehiculoCLI);
-        //gestion
-
-        AgregarServicioCLI agregarServicioCLI = new AgregarServicioCLI(sc,controlOrdenes);
-        CancelarOrdenCLI cancelarOrdenCLI = new CancelarOrdenCLI(sc,controlOrdenes);
-        CrearOrdenCLI crearOrdenCLI = new CrearOrdenCLI(sc,controlOrdenes);
-        FinalizarOrdenCLI finalizarOrdenCLI = new FinalizarOrdenCLI(sc,controlOrdenes);
-
-        GestionCLI gestionCLI = new GestionCLI(sc,
-                crearOrdenCLI,
-                finalizarOrdenCLI,
-                cancelarOrdenCLI,
-                agregarServicioCLI);
-
-        //consultas
-
-        ConsultarOrdenesClienteCLI consultarOrdenesClienteCLI = new ConsultarOrdenesClienteCLI(sc,controlConsultas);
-        ConsultarOrdenPorIdCLI consultarOrdenPorIdCLI = new ConsultarOrdenPorIdCLI(sc,controlConsultas);
-
-        ConsultasOrdenesCLI consultasOrdenesCLI = new ConsultasOrdenesCLI(sc,
-                controlConsultas,
-                consultarOrdenPorIdCLI,
-                consultarOrdenesClienteCLI);
-
-        //datos de prueba
-        // 1. Clientes (cedula, nombre, telefono, email)
-        controlRegistros.crearCliente("101010", "Carlos Perez", "3101234567", "carlos@gmail.com");
-        controlRegistros.crearCliente("202020", "Ana Gomez", "3209876543", "ana@gmail.com");
-
-        // 2. Tecnicos (cedula, nombre, especialidad)
-        controlRegistros.crearTecnico("808080", "Roberto Silva", "Electricidad");
-        controlRegistros.crearTecnico("909090", "Martha Ruiz", "Mecanica General");
-
-        // 3. Vehiculos (placa, marca, modeloAnio, idCliente, atributoEspecifico)
-        controlRegistros.crearAutomovil("ABC123", "Toyota", "2020", "101010", "4");
-        controlRegistros.crearMotocicleta("XYZ987", "Yamaha", "2022", "202020", "250");
-        controlRegistros.crearCamion("TRK456", "Volvo", "2019", "101010", "12.5");
-
-
-        controlOrdenes.crearOrden("ORD-1", "ABC123", "808080", "Falla en sistema eléctrico");
-        controlOrdenes.crearOrden("ORD-2", "XYZ987", "909090", "Mantenimiento preventivo 10k km");
-
-        // 5. Agregar un servicio de prueba a la primera orden (idOrden, nombreServicio, costo)
-        controlOrdenes.agregarServicio("ORD-1", "Cambio de batería", "180000");
-
-        VistaMain vistaMain = new VistaMain(sc,registrosCLI,gestionCLI,consultasOrdenesCLI);
-        vistaMain.mostrarMain();
+        SwingUtilities.invokeLater(() -> {
+            VentanaPrincipal ventana = new VentanaPrincipal(
+                    clienteController,
+                    tecnicoController,
+                    vehiculoController,
+                    ordenController);
+            ventana.setVisible(true);
+        });
     }
 }

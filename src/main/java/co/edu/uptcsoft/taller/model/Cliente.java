@@ -21,6 +21,14 @@ public class Cliente {
         return nombre;
     }
 
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public String toString() {
         return "Cliente{" +
