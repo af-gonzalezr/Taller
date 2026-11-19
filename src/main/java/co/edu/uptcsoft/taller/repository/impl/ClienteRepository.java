@@ -31,7 +31,10 @@ public class ClienteRepository implements Repository<Cliente> {
         if (id == null || id.isBlank()) {
             return Optional.empty();
         }
-        return Optional.ofNullable(clientes.get(id));
+        return clientes.entrySet().stream()
+                .filter(entry -> entry.getKey().equalsIgnoreCase(id.trim()))
+                .map(Map.Entry::getValue)
+                .findFirst();
     }
 
     @Override
@@ -39,7 +42,11 @@ public class ClienteRepository implements Repository<Cliente> {
         if (id == null || id.isBlank()) {
             return false;
         }
-        return clientes.remove(id) != null;
+        String clave = clientes.keySet().stream()
+                .filter(key -> key.equalsIgnoreCase(id.trim()))
+                .findFirst()
+                .orElse(null);
+        return clave != null && clientes.remove(clave) != null;
     }
 
     @Override

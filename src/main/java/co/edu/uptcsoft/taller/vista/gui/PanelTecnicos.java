@@ -39,13 +39,9 @@ public class PanelTecnicos extends JPanel {
 
         // Tabla central
         String[] columnas = {"ID", "Nombre", "Especialidad"};
-        modeloTabla = new DefaultTableModel(columnas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        modeloTabla = new DefaultTableModel(columnas, 0);
         tableTecnicos = new JTable(modeloTabla);
+        tableTecnicos.setDefaultEditor(Object.class, null);
         tableTecnicos.setRowHeight(26);
         add(new JScrollPane(tableTecnicos), BorderLayout.CENTER);
 

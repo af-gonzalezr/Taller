@@ -36,7 +36,7 @@ public class QuitarTrabajoDeOrdenImpl implements QuitarTrabajoDeOrden {
             throw new ServiceException("El índice del trabajo no es válido");
         }
 
-        trabajos.remove(indiceTrabajo);
+        orden.eliminarTrabajo(indiceTrabajo);
         return ordenRepository.guardar(orden);
     }
 }

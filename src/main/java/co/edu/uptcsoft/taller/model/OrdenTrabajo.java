@@ -1,5 +1,7 @@
 package co.edu.uptcsoft.taller.model;
 
+import co.edu.uptcsoft.taller.exception.ServiceException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -51,6 +53,17 @@ public class OrdenTrabajo {
         }
         listaTrabajos.add(trabajo);
     }
+
+    public void eliminarTrabajo(int idx){
+        try {
+            listaTrabajos.remove(idx);
+        }catch (Exception e){
+            throw new ServiceException("No se ha podido elimnar el trabajo");
+        }
+    }
+
+
+
 
     public double calcularCostoTotal() {
         return listaTrabajos.stream()

@@ -66,4 +66,23 @@ class VehiculoControllerImplTest {
         assertEquals(2024, modelAndDoors[0]);
         assertEquals(4, modelAndDoors[1]);
     }
+
+    @Test
+    void formatsPlateAsUppercaseBeforeDelegation() {
+        final String[] capturedPlate = new String[1];
+        RegistrarAuto registrarAuto = (placa, marca, modelo, idCliente, puertas) -> {
+            capturedPlate[0] = placa;
+            return null;
+        };
+        VehiculoControllerImpl controller = controllerWith(
+                registrarAuto,
+                (placa, marca, modelo, idCliente, cilindraje) -> null,
+                (placa, marca, modelo, idCliente, carga) -> null,
+                placa -> null,
+                idCliente -> List.of());
+
+        controller.registrarAuto(" abc-123 ", " Toyota ", "2024", "1", "4");
+
+        assertEquals("ABC-123", capturedPlate[0]);
+    }
 }

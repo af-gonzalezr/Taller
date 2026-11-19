@@ -34,7 +34,7 @@ public class VehiculoControllerImpl implements VehiculoController {
 
     @Override
     public Automovil registrarAuto(String placa, String marca, String modelo, String idCliente, String numeroPuertas) {
-        String normalizedPlate = ControllerValidation.requiredText(placa, "placa");
+        String normalizedPlate = ControllerValidation.plate(placa);
         String normalizedBrand = ControllerValidation.requiredText(marca, "marca");
         int normalizedModel = ControllerValidation.positiveInt(modelo, "modelo");
         String normalizedClientId = ControllerValidation.requiredText(idCliente, "idCliente");
@@ -45,7 +45,7 @@ public class VehiculoControllerImpl implements VehiculoController {
 
     @Override
     public Motocicleta registrarMoto(String placa, String marca, String modelo, String idCliente, String cilindraje) {
-        String normalizedPlate = ControllerValidation.requiredText(placa, "placa");
+        String normalizedPlate = ControllerValidation.plate(placa);
         String normalizedBrand = ControllerValidation.requiredText(marca, "marca");
         int normalizedModel = ControllerValidation.positiveInt(modelo, "modelo");
         String normalizedClientId = ControllerValidation.requiredText(idCliente, "idCliente");
@@ -56,7 +56,7 @@ public class VehiculoControllerImpl implements VehiculoController {
 
     @Override
     public Camion registrarCamion(String placa, String marca, String modelo, String idCliente, String capacidadCarga) {
-        String normalizedPlate = ControllerValidation.requiredText(placa, "placa");
+        String normalizedPlate = ControllerValidation.plate(placa);
         String normalizedBrand = ControllerValidation.requiredText(marca, "marca");
         int normalizedModel = ControllerValidation.positiveInt(modelo, "modelo");
         String normalizedClientId = ControllerValidation.requiredText(idCliente, "idCliente");
@@ -67,7 +67,7 @@ public class VehiculoControllerImpl implements VehiculoController {
 
     @Override
     public Vehiculo buscarPorPlaca(String placa) {
-        return buscarVehiculo.execute(ControllerValidation.requiredText(placa, "placa"));
+        return buscarVehiculo.execute(ControllerValidation.plate(placa));
     }
 
     @Override

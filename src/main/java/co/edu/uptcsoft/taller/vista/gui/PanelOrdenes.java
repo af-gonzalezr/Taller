@@ -36,6 +36,8 @@ public class PanelOrdenes extends JPanel {
     private final JComboBox<String> cmbEstadoFiltro;
     private final JSpinner spDesde;
     private final JSpinner spHasta;
+    private final JLabel lblDesde;
+    private final JLabel lblHasta;
 
     private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -61,8 +63,12 @@ public class PanelOrdenes extends JPanel {
         cmbEstadoFiltro = new JComboBox<>(new String[]{"EN_PROCESO", "FINALIZADA", "CANCELADA"});
         spDesde = crearSelectorFecha(LocalDateTime.now().minusMonths(1).toLocalDate());
         spHasta = crearSelectorFecha(LocalDateTime.now().toLocalDate());
+        lblDesde = new JLabel("Desde:");
+        lblHasta = new JLabel("Hasta:");
         cmbEstadoFiltro.setVisible(false);
         txtValorFiltro.setVisible(false);
+        lblDesde.setVisible(false);
+        lblHasta.setVisible(false);
         spDesde.setVisible(false);
         spHasta.setVisible(false);
 
@@ -70,11 +76,13 @@ public class PanelOrdenes extends JPanel {
 
         cmbTipoFiltro.addActionListener(e -> {
             String sel = (String) cmbTipoFiltro.getSelectedItem();
-            boolean esTodas = "Todas".equals(sel);
-            boolean esEstado = "Estado".equals(sel);
-            boolean esFecha = "Fecha ingreso".equals(sel);
+            boolean esTodas = sel != null && sel.equalsIgnoreCase("Todas");
+            boolean esEstado = sel != null && sel.equalsIgnoreCase("Estado");
+            boolean esFecha = sel != null && sel.equalsIgnoreCase("Fecha ingreso");
             cmbEstadoFiltro.setVisible(esEstado);
             txtValorFiltro.setVisible(!esTodas && !esEstado && !esFecha);
+            lblDesde.setVisible(esFecha);
+            lblHasta.setVisible(esFecha);
             spDesde.setVisible(esFecha);
             spHasta.setVisible(esFecha);
             barraSuperior.revalidate();
@@ -87,23 +95,19 @@ public class PanelOrdenes extends JPanel {
         barraSuperior.add(cmbTipoFiltro);
         barraSuperior.add(txtValorFiltro);
         barraSuperior.add(cmbEstadoFiltro);
-        barraSuperior.add(new JLabel("Desde:"));
+        barraSuperior.add(lblDesde);
         barraSuperior.add(spDesde);
-        barraSuperior.add(new JLabel("Hasta:"));
+        barraSuperior.add(lblHasta);
         barraSuperior.add(spHasta);
         barraSuperior.add(btnFiltrar);
         add(barraSuperior, BorderLayout.NORTH);
 
         // Tabla central con columna de acciones "⋮"
         String[] columnas = {"ID Orden", "Ingreso", "Vehículo", "Cliente", "Técnico", "Estado", "Trabajos", "Total", "Acciones"};
-        modeloTabla = new DefaultTableModel(columnas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 8; // Solo la columna "⋮" es interactiva
-            }
-        };
+        modeloTabla = new DefaultTableModel(columnas, 0);
 
         tablaOrdenes = new JTable(modeloTabla);
+        tablaOrdenes.setDefaultEditor(Object.class,null);
         tablaOrdenes.setRowHeight(28);
         tablaOrdenes.getColumnModel().getColumn(8).setMaxWidth(65);
         configurarMenuAccionesTabla();
@@ -131,8 +135,10 @@ public class PanelOrdenes extends JPanel {
 
         for (OrdenTrabajo o : ordenes) {
             List<TrabajoRealizado> trabajos = o.getListaTrabajos() != null ? o.getListaTrabajos() : List.of();
-            double totalOrden = trabajos.stream().mapToDouble(TrabajoRealizado::getValor).sum();
-            granTotal += totalOrden;
+            double totalOrden = o.calcularCostoTotal();
+            if (o.getEstado() != EstadoOrden.CANCELADA) {
+                granTotal += totalOrden;
+            }
 
             String fecha = o.getFechaHoraIngreso() != null ? o.getFechaHoraIngreso().format(FORMATO_FECHA) : "-";
             String vehiculo = o.getVehiculo().getPlaca() + " (" + o.getVehiculo().getMarca() + ")";
@@ -146,7 +152,7 @@ public class PanelOrdenes extends JPanel {
                     cliente,
                     tecnico,
                     o.getEstado().name(),
-                    trabajos.size(),
+                    trabajos.isEmpty() ? "Sin trabajos" : trabajos.size(),
                     String.format("$ %.2f", totalOrden),
                     "⋮"
             });
@@ -163,7 +169,7 @@ public class PanelOrdenes extends JPanel {
                 case "Estado" -> cargarTabla(ordenController.listarPorEstado((String) cmbEstadoFiltro.getSelectedItem()));
                 case "ID Cliente" -> cargarTabla(ordenController.listarPorCliente(txtValorFiltro.getText().trim()));
                 case "ID Técnico" -> cargarTabla(ordenController.listarPorTecnico(txtValorFiltro.getText().trim()));
-                case "Placa" -> cargarTabla(ordenController.listarPorVehiculo(txtValorFiltro.getText().trim()));
+                case "Placa" -> cargarTabla(ordenController.listarPorVehiculo(txtValorFiltro.getText().trim().toUpperCase()));
                 case "Fecha ingreso" -> cargarTablaPorFecha();
             }
         } catch (Exception ex) {
@@ -171,7 +177,7 @@ public class PanelOrdenes extends JPanel {
         }
     }
 
-    private JSpinner crearSelectorFecha(java.time.LocalDate fechaInicial) {
+    private JSpinner crearSelectorFecha(LocalDate fechaInicial) {
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.set(fechaInicial.getYear(), fechaInicial.getMonthValue() - 1, fechaInicial.getDayOfMonth());
@@ -200,7 +206,8 @@ public class PanelOrdenes extends JPanel {
 
         List<OrdenTrabajo> filtradas = ordenController.listarTodas().stream()
                 .filter(orden -> {
-                    java.time.LocalDate ingreso = orden.getFechaHoraIngreso().toLocalDate();
+                    if(orden.getFechaHoraIngreso() == null) return false;
+                    LocalDate ingreso = orden.getFechaHoraIngreso().toLocalDate();
                     return !ingreso.isBefore(desde) && !ingreso.isAfter(hasta);
                 })
                 .toList();
@@ -235,7 +242,7 @@ public class PanelOrdenes extends JPanel {
 
         // Renderer del botón "⋮"
         tablaOrdenes.getColumnModel().getColumn(8).setCellRenderer((table, value, isSelected, hasFocus, row, column) -> {
-            JButton btn = new JButton("⋮");
+            JButton btn = new JButton("...");
             btn.setFocusable(false);
             return btn;
         });
@@ -253,7 +260,7 @@ public class PanelOrdenes extends JPanel {
                 tablaOrdenes.setRowSelectionInterval(fila, fila);
                 String idOrden = tablaOrdenes.getValueAt(fila, 0).toString();
                 String estado = tablaOrdenes.getValueAt(fila, 5).toString();
-                boolean enProceso = "EN_PROCESO".equals(estado);
+                boolean enProceso = estado != null && estado.equalsIgnoreCase("EN_PROCESO");
 
                 itemAgregarTrabajo.setEnabled(enProceso);
                 itemQuitarTrabajo.setEnabled(enProceso);
@@ -351,7 +358,7 @@ public class PanelOrdenes extends JPanel {
             JComboBox<String> cmbTrabajos = new JComboBox<>();
             for (int i = 0; i < trabajos.size(); i++) {
                 TrabajoRealizado t = trabajos.get(i);
-                cmbTrabajos.addItem(i + " - " + t.getDescripcion() + " ($" + t.getValor() + ")");
+                cmbTrabajos.addItem((i+1) + " - " + t.getDescripcion() + " ($" + t.getValor() + ")");
             }
 
             int res = JOptionPane.showConfirmDialog(this, cmbTrabajos, "Seleccione trabajo a quitar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);

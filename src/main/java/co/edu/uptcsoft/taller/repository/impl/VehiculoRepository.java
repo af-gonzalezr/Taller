@@ -23,6 +23,7 @@ public class VehiculoRepository implements Repository<Vehiculo> {
             return null;
         }
         String placaFormateada = elemento.getPlaca().trim().toUpperCase();
+        elemento.setPlaca(placaFormateada);
         vehiculos.put(placaFormateada, elemento);
         return elemento;
     }
@@ -40,7 +41,11 @@ public class VehiculoRepository implements Repository<Vehiculo> {
         if (id == null || id.isBlank()) {
             return false;
         }
-        return vehiculos.remove(id.trim().toUpperCase()) != null;
+        String clave = vehiculos.keySet().stream()
+                .filter(key -> key.equalsIgnoreCase(id.trim()))
+                .findFirst()
+                .orElse(null);
+        return clave != null && vehiculos.remove(clave) != null;
     }
 
     @Override

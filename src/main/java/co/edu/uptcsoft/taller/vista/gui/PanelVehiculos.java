@@ -6,6 +6,10 @@ import co.edu.uptcsoft.taller.model.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -142,7 +146,7 @@ public class PanelVehiculos extends JPanel {
             return;
         }
         try {
-            Vehiculo v = vehiculoController.buscarPorPlaca(placa);
+            Vehiculo v = vehiculoController.buscarPorPlaca(placa.toUpperCase());
             cargarTabla(List.of(v));
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Búsqueda", JOptionPane.WARNING_MESSAGE);
@@ -176,6 +180,7 @@ public class PanelVehiculos extends JPanel {
         }
 
         JTextField txtPlaca = new JTextField();
+        configurarPlacaMayusculas(txtPlaca);
         JTextField txtMarca = new JTextField();
         JTextField txtModelo = new JTextField();
         JLabel lblExtra = new JLabel("Número de puertas:");
@@ -183,9 +188,9 @@ public class PanelVehiculos extends JPanel {
 
         cmbTipo.addActionListener(e -> {
             String seleccion = (String) cmbTipo.getSelectedItem();
-            if ("Automóvil".equals(seleccion)) {
+            if (seleccion != null && seleccion.equalsIgnoreCase("Automóvil")) {
                 lblExtra.setText("Número de puertas:");
-            } else if ("Motocicleta".equals(seleccion)) {
+            } else if (seleccion != null && seleccion.equalsIgnoreCase("Motocicleta")) {
                 lblExtra.setText("Cilindraje (cc):");
             } else {
                 lblExtra.setText("Capacidad de carga (ton):");
@@ -212,9 +217,9 @@ public class PanelVehiculos extends JPanel {
                 String idCliente = cmbCliente.getSelectedItem().toString().split(" - ")[0];
                 String tipo = (String) cmbTipo.getSelectedItem();
 
-                if ("Automóvil".equals(tipo)) {
+                if (tipo.equalsIgnoreCase("Automóvil")) {
                     vehiculoController.registrarAuto(txtPlaca.getText(), txtMarca.getText(), txtModelo.getText(), idCliente, txtExtra.getText());
-                } else if ("Motocicleta".equals(tipo)) {
+                } else if (tipo.equalsIgnoreCase("Motocicleta")) {
                     vehiculoController.registrarMoto(txtPlaca.getText(), txtMarca.getText(), txtModelo.getText(), idCliente, txtExtra.getText());
                 } else {
                     vehiculoController.registrarCamion(txtPlaca.getText(), txtMarca.getText(), txtModelo.getText(), idCliente, txtExtra.getText());
@@ -225,5 +230,22 @@ public class PanelVehiculos extends JPanel {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+
+    private void configurarPlacaMayusculas(JTextField campoPlaca) {
+        PlainDocument document = (PlainDocument) campoPlaca.getDocument();
+        document.setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass bypass, int offset, String texto, AttributeSet attributes)
+                    throws BadLocationException {
+                super.insertString(bypass, offset, texto.toUpperCase(), attributes);
+            }
+
+            @Override
+            public void replace(FilterBypass bypass, int offset, int length, String texto, AttributeSet attributes)
+                    throws BadLocationException {
+                super.replace(bypass, offset, length, texto == null ? null : texto.toUpperCase(), attributes);
+            }
+        });
     }
 }

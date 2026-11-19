@@ -31,7 +31,10 @@ public class TecnicoRepository implements Repository<Tecnico> {
         if (id == null || id.isBlank()) {
             return Optional.empty();
         }
-        return Optional.ofNullable(tecnicos.get(id));
+        return tecnicos.entrySet().stream()
+                .filter(entry -> entry.getKey().equalsIgnoreCase(id.trim()))
+                .map(Map.Entry::getValue)
+                .findFirst();
     }
 
     @Override
@@ -39,7 +42,11 @@ public class TecnicoRepository implements Repository<Tecnico> {
         if (id == null || id.isBlank()) {
             return false;
         }
-        return tecnicos.remove(id) != null;
+        String clave = tecnicos.keySet().stream()
+                .filter(key -> key.equalsIgnoreCase(id.trim()))
+                .findFirst()
+                .orElse(null);
+        return clave != null && tecnicos.remove(clave) != null;
     }
 
     @Override

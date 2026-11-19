@@ -78,6 +78,10 @@ public final class ControllerValidation {
         return normalized;
     }
 
+    public static String plate(String value) {
+        return requiredText(value, "placa").toUpperCase();
+    }
+
     public static String email(String value) {
         String normalized = requiredText(value, "correo");
         int firstAt = normalized.indexOf('@');

@@ -7,7 +7,7 @@ public abstract class Vehiculo {
     protected Cliente cliente;
 
     protected Vehiculo(String placa, String marca, int modelo, Cliente cliente) {
-        this.placa = placa;
+        this.placa = placa == null ? null : placa.trim().toUpperCase();
         this.marca = marca;
         this.modelo = modelo;
         this.cliente = cliente;
@@ -18,7 +18,7 @@ public abstract class Vehiculo {
     }
 
     public void setPlaca(String placa) {
-        this.placa = placa;
+        this.placa = placa == null ? null : placa.trim().toUpperCase();
     }
 
     public String getMarca() {

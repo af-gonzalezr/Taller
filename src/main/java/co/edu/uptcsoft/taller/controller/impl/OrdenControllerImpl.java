@@ -130,6 +130,6 @@ public class OrdenControllerImpl implements OrdenController {
     @Override
     public List<OrdenTrabajo> listarPorVehiculo(String placa) {
         return ordenesVehiculo.execute(
-                ControllerValidation.requiredText(placa, "placa"));
+                ControllerValidation.plate(placa));
     }
 }

@@ -31,7 +31,10 @@ public class OrdenRepository implements Repository<OrdenTrabajo> {
         if (id == null || id.isBlank()) {
             return Optional.empty();
         }
-        return Optional.ofNullable(ordenes.get(id));
+        return ordenes.entrySet().stream()
+                .filter(entry -> entry.getKey().equalsIgnoreCase(id.trim()))
+                .map(Map.Entry::getValue)
+                .findFirst();
     }
 
     @Override
@@ -39,7 +42,11 @@ public class OrdenRepository implements Repository<OrdenTrabajo> {
         if (id == null || id.isBlank()) {
             return false;
         }
-        return ordenes.remove(id) != null;
+        String clave = ordenes.keySet().stream()
+                .filter(key -> key.equalsIgnoreCase(id.trim()))
+                .findFirst()
+                .orElse(null);
+        return clave != null && ordenes.remove(clave) != null;
     }
 
     @Override

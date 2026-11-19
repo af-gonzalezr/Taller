@@ -69,7 +69,7 @@ public class PanelClientes extends JPanel {
                     c.getEmail()
             });
         }
-        lblEstado.setText("TOTAL CLIENTES: "+clientes.size());
+        lblEstado.setText("Clientes mostrados: "+clientes.size());
     }
 
     private void buscarPorId(){
