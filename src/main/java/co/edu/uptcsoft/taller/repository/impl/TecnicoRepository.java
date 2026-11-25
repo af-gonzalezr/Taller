@@ -22,7 +22,7 @@ public class TecnicoRepository implements Repository<Tecnico> {
         if (elemento == null || elemento.getId() == null || elemento.getId().isBlank()) {
             return null;
         }
-        tecnicos.put(elemento.getId(), elemento);
+        tecnicos.put(elemento.getId().trim().toUpperCase(), elemento);
         return elemento;
     }
 
@@ -31,10 +31,7 @@ public class TecnicoRepository implements Repository<Tecnico> {
         if (id == null || id.isBlank()) {
             return Optional.empty();
         }
-        return tecnicos.entrySet().stream()
-                .filter(entry -> entry.getKey().equalsIgnoreCase(id.trim()))
-                .map(Map.Entry::getValue)
-                .findFirst();
+        return Optional.ofNullable(tecnicos.get(id.trim().toUpperCase()));
     }
 
     @Override
@@ -42,11 +39,7 @@ public class TecnicoRepository implements Repository<Tecnico> {
         if (id == null || id.isBlank()) {
             return false;
         }
-        String clave = tecnicos.keySet().stream()
-                .filter(key -> key.equalsIgnoreCase(id.trim()))
-                .findFirst()
-                .orElse(null);
-        return clave != null && tecnicos.remove(clave) != null;
+        return tecnicos.remove(id.trim().toUpperCase()) != null;
     }
 
     @Override

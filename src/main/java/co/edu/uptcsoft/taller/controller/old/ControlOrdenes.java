@@ -5,7 +5,6 @@ import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.model.TrabajoRealizado;
 import co.edu.uptcsoft.taller.service.*;
 
-import java.time.LocalDateTime;
 
 public class ControlOrdenes {
 
@@ -38,7 +37,7 @@ public class ControlOrdenes {
                 throw new ServiceException("El campo idTécnico esta vacío");
             }
             String obs = observaciones == null ? "" : observaciones.trim();
-            return crearOrdenTrabajo.execute(idOrden.trim(), LocalDateTime.now(), placa.trim(), idTecnico.trim(), obs);
+            return crearOrdenTrabajo.execute(idOrden.trim(), placa.trim(), idTecnico.trim(), obs);
         }
 
         public OrdenTrabajo finalizarOrden(String idOrden, String observaciones) {

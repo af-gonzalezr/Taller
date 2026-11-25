@@ -6,6 +6,7 @@ import co.edu.uptcsoft.taller.model.Camion;
 import co.edu.uptcsoft.taller.model.Motocicleta;
 import co.edu.uptcsoft.taller.model.Vehiculo;
 import co.edu.uptcsoft.taller.service.BuscarVehiculo;
+import co.edu.uptcsoft.taller.service.ListarVehiculos;
 import co.edu.uptcsoft.taller.service.RegistrarAuto;
 import co.edu.uptcsoft.taller.service.RegistrarCamion;
 import co.edu.uptcsoft.taller.service.RegistrarMoto;
@@ -19,26 +20,29 @@ public class VehiculoControllerImpl implements VehiculoController {
     private final RegistrarCamion registrarCamion;
     private final BuscarVehiculo buscarVehiculo;
     private final VehiculosCliente vehiculosCliente;
+    private final ListarVehiculos listarVehiculos;
 
     public VehiculoControllerImpl(RegistrarAuto registrarAuto,
                                   RegistrarMoto registrarMoto,
                                   RegistrarCamion registrarCamion,
                                   BuscarVehiculo buscarVehiculo,
-                                  VehiculosCliente vehiculosCliente) {
+                                  VehiculosCliente vehiculosCliente,
+                                  ListarVehiculos listarVehiculos) {
         this.registrarAuto = registrarAuto;
         this.registrarMoto = registrarMoto;
         this.registrarCamion = registrarCamion;
         this.buscarVehiculo = buscarVehiculo;
         this.vehiculosCliente = vehiculosCliente;
+        this.listarVehiculos = listarVehiculos;
     }
 
     @Override
     public Automovil registrarAuto(String placa, String marca, String modelo, String idCliente, String numeroPuertas) {
         String normalizedPlate = ControllerValidation.plate(placa);
         String normalizedBrand = ControllerValidation.requiredText(marca, "marca");
-        int normalizedModel = ControllerValidation.positiveInt(modelo, "modelo");
+        int normalizedModel = ControllerValidation.integer(modelo, "modelo");
         String normalizedClientId = ControllerValidation.requiredText(idCliente, "idCliente");
-        int normalizedDoors = ControllerValidation.positiveInt(numeroPuertas, "numeroPuertas");
+        int normalizedDoors = ControllerValidation.integer(numeroPuertas, "numeroPuertas");
         return registrarAuto.execute(normalizedPlate, normalizedBrand, normalizedModel,
                 normalizedClientId, normalizedDoors);
     }
@@ -47,9 +51,9 @@ public class VehiculoControllerImpl implements VehiculoController {
     public Motocicleta registrarMoto(String placa, String marca, String modelo, String idCliente, String cilindraje) {
         String normalizedPlate = ControllerValidation.plate(placa);
         String normalizedBrand = ControllerValidation.requiredText(marca, "marca");
-        int normalizedModel = ControllerValidation.positiveInt(modelo, "modelo");
+        int normalizedModel = ControllerValidation.integer(modelo, "modelo");
         String normalizedClientId = ControllerValidation.requiredText(idCliente, "idCliente");
-        int normalizedDisplacement = ControllerValidation.positiveInt(cilindraje, "cilindraje");
+        int normalizedDisplacement = ControllerValidation.integer(cilindraje, "cilindraje");
         return registrarMoto.execute(normalizedPlate, normalizedBrand, normalizedModel,
                 normalizedClientId, normalizedDisplacement);
     }
@@ -58,9 +62,9 @@ public class VehiculoControllerImpl implements VehiculoController {
     public Camion registrarCamion(String placa, String marca, String modelo, String idCliente, String capacidadCarga) {
         String normalizedPlate = ControllerValidation.plate(placa);
         String normalizedBrand = ControllerValidation.requiredText(marca, "marca");
-        int normalizedModel = ControllerValidation.positiveInt(modelo, "modelo");
+        int normalizedModel = ControllerValidation.integer(modelo, "modelo");
         String normalizedClientId = ControllerValidation.requiredText(idCliente, "idCliente");
-        double normalizedCapacity = ControllerValidation.positiveDouble(capacidadCarga, "capacidadCarga");
+        double normalizedCapacity = ControllerValidation.decimal(capacidadCarga, "capacidadCarga");
         return registrarCamion.execute(normalizedPlate, normalizedBrand, normalizedModel,
                 normalizedClientId, normalizedCapacity);
     }
@@ -68,6 +72,11 @@ public class VehiculoControllerImpl implements VehiculoController {
     @Override
     public Vehiculo buscarPorPlaca(String placa) {
         return buscarVehiculo.execute(ControllerValidation.plate(placa));
+    }
+
+    @Override
+    public List<Vehiculo> listarTodos() {
+        return listarVehiculos.execute();
     }
 
     @Override

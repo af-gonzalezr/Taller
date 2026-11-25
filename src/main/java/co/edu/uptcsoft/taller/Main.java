@@ -38,6 +38,7 @@ public class Main {
         ListarTecnicos listarTecnicos = new ListarTecnicosImpl(tecnicoRepository);
         BuscarVehiculo buscarVehiculo = new BuscarVehiculoImpl(vehiculoRepository);
         VehiculosCliente vehiculosCliente = new VehiculosClienteImpl(clienteRepository, vehiculoRepository);
+        ListarVehiculos listarVehiculos = new ListarVehiculosImpl(vehiculoRepository);
 
         CrearOrdenTrabajo crearOrdenTrabajo = new CrearOrdenTrabajoImpl(
                 vehiculoRepository, tecnicoRepository, ordenRepository);
@@ -54,13 +55,16 @@ public class Main {
         OrdenesTecnico ordenesTecnico = new OrdenesTecnicoImpl(ordenRepository, tecnicoRepository);
         OrdenesVehiculo ordenesVehiculo =
                 new OrdenesVehiculoImpl(ordenRepository, vehiculoRepository);
+        OrdenesFechaIngreso ordenesFechaIngreso = new OrdenesFechaIngresoImpl(ordenRepository);
+        CalcularTotalOrdenes calcularTotalOrdenes = new CalcularTotalOrdenesImpl();
 
         ClienteControllerImpl clienteController = new ClienteControllerImpl(
                 registrarCliente, buscarCliente, listarClientes);
         TecnicoControllerImpl tecnicoController = new TecnicoControllerImpl(
                 registrarTecnico, buscarTecnico, listarTecnicos);
         VehiculoControllerImpl vehiculoController = new VehiculoControllerImpl(
-                registrarAuto, registrarMoto, registrarCamion, buscarVehiculo, vehiculosCliente);
+                registrarAuto, registrarMoto, registrarCamion, buscarVehiculo, vehiculosCliente,
+                listarVehiculos);
         OrdenControllerImpl ordenController = new OrdenControllerImpl(
                 crearOrdenTrabajo,
                 agregarTrabajoAOrden,
@@ -73,7 +77,9 @@ public class Main {
                 ordenesCliente,
                 ordenesEstado,
                 ordenesTecnico,
-                ordenesVehiculo);
+                ordenesVehiculo,
+                ordenesFechaIngreso,
+                calcularTotalOrdenes);
 
         clienteController.registrar("101010", "Carlos Perez", "3101234567", "carlos@gmail.com");
         clienteController.registrar("202020", "Ana Gomez", "3209876543", "ana@gmail.com");

@@ -52,21 +52,25 @@ class ControllerValidationTest {
     }
 
     @Test
-    void parsesPositiveInt() {
-        assertEquals(4, ControllerValidation.positiveInt(" 4 ", "puertas"));
+    void parsesIntWithoutApplyingPositivityRules() {
+        assertEquals(4, ControllerValidation.integer(" 4 ", "puertas"));
+        assertEquals(0, ControllerValidation.integer("0", "puertas"));
+        assertEquals(-4, ControllerValidation.integer("-4", "puertas"));
         assertThrows(ValidationException.class,
-                () -> ControllerValidation.positiveInt("4.5", "puertas"));
+                () -> ControllerValidation.integer("4.5", "puertas"));
     }
 
     @Test
-    void parsesPositiveDoubleAndRejectsSpecialValues() {
-        assertEquals(10.5, ControllerValidation.positiveDouble(" 10.5 ", "valor"), 0.0001);
+    void parsesDoubleWithoutApplyingPositivityRulesAndRejectsSpecialValues() {
+        assertEquals(10.5, ControllerValidation.decimal(" 10.5 ", "valor"), 0.0001);
+        assertEquals(-10.5, ControllerValidation.decimal("-10.5", "valor"), 0.0001);
+        assertEquals(0.0, ControllerValidation.decimal("0", "valor"), 0.0001);
         assertThrows(ValidationException.class,
-                () -> ControllerValidation.positiveDouble("10d", "valor"));
+                () -> ControllerValidation.decimal("10d", "valor"));
         assertThrows(ValidationException.class,
-                () -> ControllerValidation.positiveDouble("NaN", "valor"));
+                () -> ControllerValidation.decimal("NaN", "valor"));
         assertThrows(ValidationException.class,
-                () -> ControllerValidation.positiveDouble("Infinity", "valor"));
+                () -> ControllerValidation.decimal("Infinity", "valor"));
     }
 
     @Test

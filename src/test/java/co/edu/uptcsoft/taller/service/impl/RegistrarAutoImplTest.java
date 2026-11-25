@@ -59,4 +59,11 @@ class RegistrarAutoImplTest {
 
         assertThrows(ElementoNoEncontradoException.class, () -> service.execute(placa, "Toyota", 2024, idCliente, 4));
     }
+
+    @Test
+    void rejectsNonPositiveModelOrDoorCountBeforeRepositoryAccess() {
+        assertThrows(ServiceException.class, () -> service.execute("ABC-123", "Toyota", 0, "1", 4));
+        assertThrows(ServiceException.class, () -> service.execute("ABC-123", "Toyota", 2024, "1", 0));
+        verifyNoInteractions(clienteRepository, vehiculoRepository);
+    }
 }

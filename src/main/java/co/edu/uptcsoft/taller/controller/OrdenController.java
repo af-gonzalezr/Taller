@@ -2,9 +2,11 @@ package co.edu.uptcsoft.taller.controller;
 
 import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.model.TrabajoRealizado;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrdenController {
+    OrdenTrabajo crear(String idOrden, String idVehiculo, String idTecnico, String observacionesIngreso);
     OrdenTrabajo crear(String idOrden, String fechaHoraIngreso, String idVehiculo, String idTecnico, String observacionesIngreso);
     TrabajoRealizado agregarTrabajo(String idOrden, String descripcion, String valor);
     OrdenTrabajo quitarTrabajo(String idOrden, String indiceTrabajo);
@@ -17,4 +19,6 @@ public interface OrdenController {
     List<OrdenTrabajo> listarPorEstado(String estado);
     List<OrdenTrabajo> listarPorTecnico(String idTecnico);
     List<OrdenTrabajo> listarPorVehiculo(String placa);
+    List<OrdenTrabajo> listarPorFechaIngreso(LocalDate desde, LocalDate hasta);
+    double calcularTotal(List<OrdenTrabajo> ordenes);
 }

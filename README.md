@@ -228,9 +228,11 @@ La raiz contiene interfaces. Cada interfaz normalmente tiene su implementacion h
 |---|---|
 | Clientes | `RegistrarCliente`, `BuscarCliente`, `ListarClientes` |
 | Tecnicos | `RegistrarTecnico`, `BuscarTecnico`, `ListarTecnicos` |
-| Vehiculos | `RegistrarAuto`, `RegistrarMoto`, `RegistrarCamion`, `BuscarVehiculo`, `VehiculosCliente` |
-| Ordenes | `CrearOrdenTrabajo`, `AgregarTrabajoAOrden`, `QuitarTrabajoDeOrden`, `ReasignarTecnicoOrden`, `FinalizarOrden`, `CancelarOrden`, `BuscarOrden`, `ListarOrdenes` |
-| Consultas | `OrdenesCliente`, `OrdenesEstado`, `OrdenesTecnico`, `OrdenesVehiculo` |
+| Vehiculos | `RegistrarAuto`, `RegistrarMoto`, `RegistrarCamion`, `BuscarVehiculo`, `ListarVehiculos`, `VehiculosCliente` |
+| Ordenes | `CrearOrdenTrabajo`, `AgregarTrabajoAOrden`, `QuitarTrabajoDeOrden`, `ReasignarTecnicoOrden`, `FinalizarOrden`, `CancelarOrden`, `BuscarOrden`, `ListarOrdenes`, `CalcularTotalOrdenes` |
+| Consultas | `OrdenesCliente`, `OrdenesEstado`, `OrdenesTecnico`, `OrdenesVehiculo`, `OrdenesFechaIngreso` |
+
+`OrdenesFechaIngreso` filtra las ordenes en el servicio usando un rango inclusivo de fechas. La vista solo obtiene las fechas elegidas y delega la consulta al controlador.
 
 Los nombres son expresivos y cada `execute(...)` representa una accion completa del dominio.
 
@@ -350,9 +352,12 @@ Ejemplo logico:
 
 ```java
 String id = ControllerValidation.requiredText(idEntrada, "id");
-int puertas = ControllerValidation.positiveInt(puertasEntrada, "numeroPuertas");
+int puertas = ControllerValidation.integer(puertasEntrada, "numeroPuertas");
 return registrarAuto.execute(id, marca, modelo, idCliente, puertas);
 ```
+
+El controlador convierte y valida el formato numérico; las reglas de dominio, como exigir valores positivos, se aplican en el servicio.
+Las observaciones de ingreso son opcionales y se normalizan a una cadena vacía; las observaciones de entrega son obligatorias para finalizar una orden y el servicio las valida.
 
 No se deben poner consultas a repositorios dentro de un controlador.
 

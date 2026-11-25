@@ -20,6 +20,10 @@ public class FinalizarOrdenImpl implements FinalizarOrden {
 
     @Override
     public OrdenTrabajo execute(String idOrden, String obsevacionesEntrega) {
+        if (obsevacionesEntrega == null || obsevacionesEntrega.isBlank()) {
+            throw new ServiceException("Las observaciones de entrega son obligatorias");
+        }
+
         Optional<OrdenTrabajo> ordenOpt = ordenTrabajoRepository.buscarPorId(idOrden);
         if (ordenOpt.isEmpty()) {
             throw new ElementoNoEncontradoException("La orden no existe");

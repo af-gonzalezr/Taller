@@ -53,4 +53,12 @@ class AgregarTrabajoAOrdenImplTest {
 
         assertThrows(ServiceException.class, () -> service.execute(idOrden, "Cambio aceite", 50.0));
     }
+
+    @Test
+    void rejectsNonPositiveOrNonFiniteValueBeforeRepositoryLookup() {
+        assertThrows(ServiceException.class, () -> service.execute("O1", "Cambio aceite", 0.0));
+        assertThrows(ServiceException.class, () -> service.execute("O1", "Cambio aceite", -1.0));
+        assertThrows(ServiceException.class, () -> service.execute("O1", "Cambio aceite", Double.POSITIVE_INFINITY));
+        verifyNoInteractions(ordenTrabajoRepository);
+    }
 }

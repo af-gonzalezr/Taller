@@ -6,7 +6,7 @@ import co.edu.uptcsoft.taller.model.EstadoOrden;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
-public final class ControllerValidation {
+public class ControllerValidation {
     private ControllerValidation() {
     }
 
@@ -28,12 +28,8 @@ public final class ControllerValidation {
         return value.trim();
     }
 
-    public static int positiveInt(String value, String fieldName) {
-        int parsed = parseInt(value, fieldName);
-        if (parsed <= 0) {
-            throw new ValidationException("El campo " + fieldName + " debe ser un entero positivo");
-        }
-        return parsed;
+    public static int integer(String value, String fieldName) {
+        return parseInt(value, fieldName);
     }
 
     public static int nonNegativeInt(String value, String fieldName) {
@@ -53,20 +49,20 @@ public final class ControllerValidation {
         }
     }
 
-    public static double positiveDouble(String value, String fieldName) {
+    public static double decimal(String value, String fieldName) {
         String normalized = requiredText(value, fieldName);
-        if (!normalized.matches("\\d+(\\.\\d+)?")) {
-            throw new ValidationException("El campo " + fieldName + " debe ser un decimal positivo válido");
+        if (!Character.isDigit(normalized.charAt(normalized.length() - 1))) {
+            throw new ValidationException("El campo " + fieldName + " debe ser un decimal válido");
         }
 
         try {
             double parsed = Double.parseDouble(normalized);
-            if (!Double.isFinite(parsed) || parsed <= 0.0) {
-                throw new ValidationException("El campo " + fieldName + " debe ser un decimal positivo válido");
+            if (!Double.isFinite(parsed)) {
+                throw new ValidationException("El campo " + fieldName + " debe ser un decimal válido");
             }
             return parsed;
         } catch (NumberFormatException exception) {
-            throw new ValidationException("El campo " + fieldName + " debe ser un decimal positivo válido");
+            throw new ValidationException("El campo " + fieldName + " debe ser un decimal válido");
         }
     }
 
@@ -79,20 +75,19 @@ public final class ControllerValidation {
     }
 
     public static String plate(String value) {
-        return requiredText(value, "placa").toUpperCase();
+        String normalized = requiredText(value, "placa").toUpperCase();
+        if (!normalized.matches("^[A-Z]{3}[0-9]{2}[0-9A-Z]$")) {
+            throw new ValidationException("La placa debe tener formato válido (ej: ABC123 o ABC12D)");
+        }
+        return normalized;
     }
 
     public static String email(String value) {
-        String normalized = requiredText(value, "correo");
-        int firstAt = normalized.indexOf('@');
+        String normalized = requiredText(value, "correo").toLowerCase();
+        int at = normalized.indexOf('@');
+        int dot = normalized.lastIndexOf('.');
 
-        if (firstAt <= 0
-                || firstAt != normalized.lastIndexOf('@')
-                || normalized.indexOf('@') == normalized.length() - 1
-                || normalized.indexOf('.', firstAt + 1) <= firstAt + 1
-                || normalized.indexOf('.', firstAt + 1) == normalized.length() - 1
-                || normalized.indexOf(' ') >= 0
-                || normalized.indexOf('\t') >= 0) {
+        if (at <= 0 || dot <= at + 1 || dot == normalized.length() - 1) {
             throw new ValidationException("El correo tiene un formato inválido");
         }
         return normalized;

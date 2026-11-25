@@ -29,17 +29,13 @@ public class OrdenTrabajo {
         if (idOrden == null || idOrden.isBlank()) {
             throw new IllegalArgumentException("El ID de la orden no puede ser nulo o vacío");
         }
-        if (observacionesIngreso == null || observacionesIngreso.isBlank()) {
-            throw new IllegalArgumentException("Las observaciones de ingreso son obligatorias");
-        }
-
         this.idOrden = idOrden.trim();
         this.fechaHoraIngreso = Objects.requireNonNull(fechaHoraIngreso, "La fecha y hora de ingreso es obligatoria");
         this.fechaHoraEntrega = fechaHoraEntrega;
         this.estado = Objects.requireNonNull(estado, "El estado es obligatorio");
         this.vehiculo = Objects.requireNonNull(vehiculo, "El vehículo es obligatorio");
         this.tecnico = Objects.requireNonNull(tecnico, "El técnico es obligatorio");
-        this.observacionesIngreso = observacionesIngreso.trim();
+        this.observacionesIngreso = observacionesIngreso == null ? "" : observacionesIngreso.trim();
         this.observacionesEntrega = observacionesEntrega;
         this.listaTrabajos = new ArrayList<>();
     }

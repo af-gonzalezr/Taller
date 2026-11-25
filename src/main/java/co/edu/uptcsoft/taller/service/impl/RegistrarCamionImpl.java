@@ -19,6 +19,9 @@ public class RegistrarCamionImpl implements RegistrarCamion {
 
     @Override
     public Camion execute(String placa, String marca, int modelo, String idCliente, double capacidadCargaTon) {
+        if (modelo <= 0 || !Double.isFinite(capacidadCargaTon) || capacidadCargaTon <= 0.0) {
+            throw new ServiceException("El modelo y la capacidad de carga deben ser positivos");
+        }
 
         if (vehiculoRepository.buscarPorId(placa).isPresent()) {
             throw new ServiceException("Placa ya registrada");

@@ -1,6 +1,5 @@
 package co.edu.uptcsoft.taller.vista.gui;
 
-import co.edu.uptcsoft.taller.controller.ClienteController;
 import co.edu.uptcsoft.taller.controller.OrdenController;
 import co.edu.uptcsoft.taller.controller.TecnicoController;
 import co.edu.uptcsoft.taller.controller.VehiculoController;
@@ -15,7 +14,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +21,6 @@ import java.util.List;
 public class PanelOrdenes extends JPanel {
 
     private final OrdenController ordenController;
-    private final ClienteController clienteController;
     private final TecnicoController tecnicoController;
     private final VehiculoController vehiculoController;
 
@@ -42,11 +39,9 @@ public class PanelOrdenes extends JPanel {
     private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public PanelOrdenes(OrdenController ordenController,
-                        ClienteController clienteController,
                         TecnicoController tecnicoController,
                         VehiculoController vehiculoController) {
         this.ordenController = ordenController;
-        this.clienteController = clienteController;
         this.tecnicoController = tecnicoController;
         this.vehiculoController = vehiculoController;
 
@@ -131,14 +126,11 @@ public class PanelOrdenes extends JPanel {
 
     private void cargarTabla(List<OrdenTrabajo> ordenes) {
         modeloTabla.setRowCount(0);
-        double granTotal = 0;
+        double granTotal = ordenController.calcularTotal(ordenes);
 
         for (OrdenTrabajo o : ordenes) {
             List<TrabajoRealizado> trabajos = o.getListaTrabajos() != null ? o.getListaTrabajos() : List.of();
             double totalOrden = o.calcularCostoTotal();
-            if (o.getEstado() != EstadoOrden.CANCELADA) {
-                granTotal += totalOrden;
-            }
 
             String fecha = o.getFechaHoraIngreso() != null ? o.getFechaHoraIngreso().format(FORMATO_FECHA) : "-";
             String vehiculo = o.getVehiculo().getPlaca() + " (" + o.getVehiculo().getMarca() + ")";
@@ -191,27 +183,16 @@ public class PanelOrdenes extends JPanel {
     }
 
     private void cargarTablaPorFecha() {
-        java.time.LocalDate desde = ((Date) spDesde.getValue())
+        LocalDate desde = ((Date) spDesde.getValue())
                 .toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
-        java.time.LocalDate hasta = ((Date) spHasta.getValue())
+        LocalDate hasta = ((Date) spHasta.getValue())
                 .toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
 
-        if (desde.isAfter(hasta)) {
-            throw new IllegalArgumentException("La fecha inicial no puede ser posterior a la fecha final.");
-        }
-
-        List<OrdenTrabajo> filtradas = ordenController.listarTodas().stream()
-                .filter(orden -> {
-                    if(orden.getFechaHoraIngreso() == null) return false;
-                    LocalDate ingreso = orden.getFechaHoraIngreso().toLocalDate();
-                    return !ingreso.isBefore(desde) && !ingreso.isAfter(hasta);
-                })
-                .toList();
-        cargarTabla(filtradas);
+        cargarTabla(ordenController.listarPorFechaIngreso(desde, hasta));
     }
 
     private void configurarMenuAccionesTabla() {
@@ -276,10 +257,7 @@ public class PanelOrdenes extends JPanel {
 
     private void mostrarDialogoNuevaOrden() {
         List<Tecnico> tecnicos = tecnicoController.listarTodos();
-        List<Vehiculo> vehiculos = new ArrayList<>();
-        for (Cliente c : clienteController.listarTodos()) {
-            vehiculos.addAll(vehiculoController.listarPorCliente(c.getId()));
-        }
+        List<Vehiculo> vehiculos = vehiculoController.listarTodos();
 
         if (tecnicos.isEmpty() || vehiculos.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Debe haber al menos un vehículo y un técnico registrados.", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -314,9 +292,7 @@ public class PanelOrdenes extends JPanel {
             try {
                 String placa = cmbVehiculo.getSelectedItem().toString().split(" - ")[0];
                 String idTecnico = cmbTecnico.getSelectedItem().toString().split(" - ")[0];
-                String fechaIngreso = LocalDateTime.now()
-                        .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                ordenController.crear(txtIdOrden.getText(), fechaIngreso, placa, idTecnico, txtObservaciones.getText());
+                ordenController.crear(txtIdOrden.getText(), placa, idTecnico, txtObservaciones.getText());
                 refrescar();
                 JOptionPane.showMessageDialog(this, "Orden creada exitosamente.");
             } catch (Exception ex) {
@@ -436,7 +412,6 @@ public class PanelOrdenes extends JPanel {
             sb.append("--- Trabajos Realizados ---\n");
 
             List<TrabajoRealizado> trabajos = o.getListaTrabajos() != null ? o.getListaTrabajos() : List.of();
-            double total = 0;
             if (trabajos.isEmpty()) {
                 sb.append("(Sin trabajos registrados)\n");
             } else {
@@ -444,9 +419,9 @@ public class PanelOrdenes extends JPanel {
                     TrabajoRealizado t = trabajos.get(i);
                     sb.append(i + 1).append(". ").append(t.getDescripcion())
                             .append(" -> $ ").append(String.format("%.2f", t.getValor())).append("\n");
-                    total += t.getValor();
                 }
             }
+            double total = o.calcularCostoTotal();
             sb.append("\nTOTAL: $ ").append(String.format("%.2f", total));
 
             JTextArea area = new JTextArea(sb.toString(), 16, 38);

@@ -20,6 +20,10 @@ public class AgregarTrabajoAOrdenImpl implements AgregarTrabajoAOrden {
 
     @Override
     public TrabajoRealizado execute(String idOrden, String descripcion, double valor) {
+        if (!Double.isFinite(valor) || valor <= 0.0) {
+            throw new ServiceException("El valor del trabajo debe ser positivo");
+        }
+
         Optional<OrdenTrabajo> ordenOpt = ordenTrabajoRepository.buscarPorId(idOrden);
         if (ordenOpt.isEmpty()) {
             throw new ElementoNoEncontradoException("La orden no existe");

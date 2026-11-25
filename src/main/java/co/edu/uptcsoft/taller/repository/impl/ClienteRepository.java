@@ -22,7 +22,7 @@ public class ClienteRepository implements Repository<Cliente> {
         if (elemento == null || elemento.getId() == null || elemento.getId().isBlank()) {
             return null;
         }
-        clientes.put(elemento.getId(), elemento);
+        clientes.put(elemento.getId().trim().toUpperCase(), elemento);
         return elemento;
     }
 
@@ -31,10 +31,7 @@ public class ClienteRepository implements Repository<Cliente> {
         if (id == null || id.isBlank()) {
             return Optional.empty();
         }
-        return clientes.entrySet().stream()
-                .filter(entry -> entry.getKey().equalsIgnoreCase(id.trim()))
-                .map(Map.Entry::getValue)
-                .findFirst();
+        return Optional.ofNullable(clientes.get(id.trim().toUpperCase()));
     }
 
     @Override
@@ -42,11 +39,7 @@ public class ClienteRepository implements Repository<Cliente> {
         if (id == null || id.isBlank()) {
             return false;
         }
-        String clave = clientes.keySet().stream()
-                .filter(key -> key.equalsIgnoreCase(id.trim()))
-                .findFirst()
-                .orElse(null);
-        return clave != null && clientes.remove(clave) != null;
+        return clientes.remove(id.trim().toUpperCase()) != null;
     }
 
     @Override

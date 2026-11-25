@@ -6,6 +6,7 @@ import co.edu.uptcsoft.taller.model.OrdenTrabajo;
 import co.edu.uptcsoft.taller.model.TrabajoRealizado;
 import co.edu.uptcsoft.taller.service.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class OrdenControllerImpl implements OrdenController {
     private final OrdenesEstado ordenesEstado;
     private final OrdenesTecnico ordenesTecnico;
     private final OrdenesVehiculo ordenesVehiculo;
+    private final OrdenesFechaIngreso ordenesFechaIngreso;
+    private final CalcularTotalOrdenes calcularTotalOrdenes;
 
     public OrdenControllerImpl(CrearOrdenTrabajo crearOrdenTrabajo,
                                AgregarTrabajoAOrden agregarTrabajoAOrden,
@@ -34,7 +37,9 @@ public class OrdenControllerImpl implements OrdenController {
                                OrdenesCliente ordenesCliente,
                                OrdenesEstado ordenesEstado,
                                OrdenesTecnico ordenesTecnico,
-                               OrdenesVehiculo ordenesVehiculo) {
+                               OrdenesVehiculo ordenesVehiculo,
+                               OrdenesFechaIngreso ordenesFechaIngreso,
+                               CalcularTotalOrdenes calcularTotalOrdenes) {
         this.crearOrdenTrabajo = crearOrdenTrabajo;
         this.agregarTrabajoAOrden = agregarTrabajoAOrden;
         this.quitarTrabajoDeOrden = quitarTrabajoDeOrden;
@@ -47,6 +52,19 @@ public class OrdenControllerImpl implements OrdenController {
         this.ordenesEstado = ordenesEstado;
         this.ordenesTecnico = ordenesTecnico;
         this.ordenesVehiculo = ordenesVehiculo;
+        this.ordenesFechaIngreso = ordenesFechaIngreso;
+        this.calcularTotalOrdenes = calcularTotalOrdenes;
+    }
+
+    @Override
+    public OrdenTrabajo crear(String idOrden, String idVehiculo, String idTecnico,
+                              String observacionesIngreso) {
+        String normalizedOrderId = ControllerValidation.requiredText(idOrden, "idOrden");
+        String normalizedVehicle = ControllerValidation.requiredText(idVehiculo, "idVehiculo");
+        String normalizedTechnician = ControllerValidation.requiredText(idTecnico, "idTecnico");
+        String normalizedObservations = ControllerValidation.optionalText(observacionesIngreso);
+        return crearOrdenTrabajo.execute(normalizedOrderId, normalizedVehicle,
+                normalizedTechnician, normalizedObservations);
     }
 
     @Override
@@ -55,7 +73,7 @@ public class OrdenControllerImpl implements OrdenController {
         String normalizedOrderId = ControllerValidation.requiredText(idOrden, "idOrden");
         LocalDateTime normalizedDate = ControllerValidation.localDateTime(
                 fechaHoraIngreso, "fechaHoraIngreso");
-        String normalizedVehicle = ControllerValidation.requiredText(idVehiculo, "idVehiculo");
+        String normalizedVehicle = ControllerValidation.plate(idVehiculo);
         String normalizedTechnician = ControllerValidation.requiredText(idTecnico, "idTecnico");
         String normalizedObservations = ControllerValidation.optionalText(observacionesIngreso);
         return crearOrdenTrabajo.execute(normalizedOrderId, normalizedDate, normalizedVehicle,
@@ -66,7 +84,7 @@ public class OrdenControllerImpl implements OrdenController {
     public TrabajoRealizado agregarTrabajo(String idOrden, String descripcion, String valor) {
         String normalizedOrderId = ControllerValidation.requiredText(idOrden, "idOrden");
         String normalizedDescription = ControllerValidation.requiredText(descripcion, "descripcion");
-        double normalizedValue = ControllerValidation.positiveDouble(valor, "valor");
+        double normalizedValue = ControllerValidation.decimal(valor, "valor");
         return agregarTrabajoAOrden.execute(normalizedOrderId, normalizedDescription, normalizedValue);
     }
 
@@ -87,8 +105,7 @@ public class OrdenControllerImpl implements OrdenController {
     @Override
     public OrdenTrabajo finalizar(String idOrden, String observacionesEntrega) {
         String normalizedOrderId = ControllerValidation.requiredText(idOrden, "idOrden");
-        String normalizedObservations = ControllerValidation.requiredText(
-                observacionesEntrega, "observacionesEntrega");
+        String normalizedObservations = ControllerValidation.optionalText(observacionesEntrega);
         return finalizarOrden.execute(normalizedOrderId, normalizedObservations);
     }
 
@@ -131,5 +148,15 @@ public class OrdenControllerImpl implements OrdenController {
     public List<OrdenTrabajo> listarPorVehiculo(String placa) {
         return ordenesVehiculo.execute(
                 ControllerValidation.plate(placa));
+    }
+
+    @Override
+    public List<OrdenTrabajo> listarPorFechaIngreso(LocalDate desde, LocalDate hasta) {
+        return ordenesFechaIngreso.execute(desde, hasta);
+    }
+
+    @Override
+    public double calcularTotal(List<OrdenTrabajo> ordenes) {
+        return calcularTotalOrdenes.execute(ordenes);
     }
 }

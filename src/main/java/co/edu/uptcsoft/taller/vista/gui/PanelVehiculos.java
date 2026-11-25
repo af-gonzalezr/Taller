@@ -13,7 +13,6 @@ import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PanelVehiculos extends JPanel {
@@ -81,11 +80,7 @@ public class PanelVehiculos extends JPanel {
     }
 
     public void refrescar() {
-        List<Vehiculo> todos = new ArrayList<>();
-        for (Cliente c : clienteController.listarTodos()) {
-            todos.addAll(vehiculoController.listarPorCliente(c.getId()));
-        }
-        cargarTabla(todos);
+        cargarTabla(vehiculoController.listarTodos());
     }
 
     private void cargarTabla(List<Vehiculo> vehiculos) {

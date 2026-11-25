@@ -59,4 +59,11 @@ class RegistrarMotoImplTest {
 
         assertThrows(ElementoNoEncontradoException.class, () -> service.execute(placa, "Yamaha", 2024, idCliente, 250));
     }
+
+    @Test
+    void rejectsNonPositiveModelOrDisplacementBeforeRepositoryAccess() {
+        assertThrows(ServiceException.class, () -> service.execute("ABC-123", "Yamaha", -1, "1", 250));
+        assertThrows(ServiceException.class, () -> service.execute("ABC-123", "Yamaha", 2024, "1", 0));
+        verifyNoInteractions(clienteRepository, vehiculoRepository);
+    }
 }

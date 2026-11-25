@@ -45,6 +45,28 @@ class CrearOrdenTrabajoImplTest {
     }
 
     @Test
+    void assignsCurrentEntryDateWhenDateIsOmitted() {
+        String idOrden = "O2";
+        String idVehiculo = "V1";
+        String idTecnico = "T1";
+        when(ordenTrabajoRepository.buscarPorId(idOrden)).thenReturn(Optional.empty());
+        when(tecnicoRepository.buscarPorId(idTecnico))
+                .thenReturn(Optional.of(new Tecnico(idTecnico, "Pedro", "Mecánica")));
+        when(vehiculoRepository.buscarPorId(idVehiculo))
+                .thenReturn(Optional.of(new Automovil(idVehiculo, "Toyota", 2024, null, 4)));
+        when(ordenTrabajoRepository.guardar(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        LocalDateTime before = LocalDateTime.now();
+        OrdenTrabajo resultado = service.execute(idOrden, idVehiculo, idTecnico, "Observaciones");
+        LocalDateTime after = LocalDateTime.now();
+
+        assertNotNull(resultado);
+        assertFalse(resultado.getFechaHoraIngreso().isBefore(before));
+        assertFalse(resultado.getFechaHoraIngreso().isAfter(after));
+        verify(ordenTrabajoRepository).guardar(resultado);
+    }
+
+    @Test
     void lanzaExcepcionSiYaExiste() {
         String idOrden = "O1";
         when(ordenTrabajoRepository.buscarPorId(idOrden)).thenReturn(Optional.of(mock(OrdenTrabajo.class)));

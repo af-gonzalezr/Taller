@@ -27,7 +27,7 @@ public class VentanaPrincipal extends JFrame {
         this.panelClientes = new PanelClientes(clienteController);
         this.panelTecnicos = new PanelTecnicos(tecnicoController);
         this.panelVehiculos = new PanelVehiculos(vehiculoController, clienteController);
-        this.panelOrdenes = new PanelOrdenes(ordenController, clienteController, tecnicoController, vehiculoController);
+        this.panelOrdenes = new PanelOrdenes(ordenController, tecnicoController, vehiculoController);
 
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Órdenes de Trabajo", panelOrdenes);

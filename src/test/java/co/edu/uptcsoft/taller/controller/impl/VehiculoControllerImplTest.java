@@ -4,6 +4,7 @@ import co.edu.uptcsoft.taller.exception.ValidationException;
 import co.edu.uptcsoft.taller.model.Cliente;
 import co.edu.uptcsoft.taller.model.Automovil;
 import co.edu.uptcsoft.taller.service.BuscarVehiculo;
+import co.edu.uptcsoft.taller.service.ListarVehiculos;
 import co.edu.uptcsoft.taller.service.RegistrarAuto;
 import co.edu.uptcsoft.taller.service.RegistrarCamion;
 import co.edu.uptcsoft.taller.service.RegistrarMoto;
@@ -20,9 +21,10 @@ class VehiculoControllerImplTest {
                                                    RegistrarMoto registrarMoto,
                                                    RegistrarCamion registrarCamion,
                                                    BuscarVehiculo buscarVehiculo,
-                                                   VehiculosCliente vehiculosCliente) {
+                                                   VehiculosCliente vehiculosCliente,
+                                                   ListarVehiculos listarVehiculos) {
         return new VehiculoControllerImpl(registrarAuto, registrarMoto, registrarCamion,
-                buscarVehiculo, vehiculosCliente);
+                buscarVehiculo, vehiculosCliente, listarVehiculos);
     }
 
     @Test
@@ -32,7 +34,8 @@ class VehiculoControllerImplTest {
                 (placa, marca, modelo, idCliente, cilindraje) -> null,
                 (placa, marca, modelo, idCliente, carga) -> null,
                 placa -> null,
-                idCliente -> List.of());
+                idCliente -> List.of(),
+                List::of);
 
         assertThrows(ValidationException.class,
                 () -> controller.registrarAuto(" ABC-123 ", "Toyota", "2024x", "1", "4"));
@@ -57,7 +60,8 @@ class VehiculoControllerImplTest {
                 (placa, marca, modelo, idCliente, cilindraje) -> null,
                 (placa, marca, modelo, idCliente, carga) -> null,
                 placa -> null,
-                idCliente -> List.of());
+                idCliente -> List.of(),
+                List::of);
 
         controller.registrarAuto(" ABC-123 ", " Toyota ", " 2024 ", " 1 ", " 4 ");
 
@@ -79,7 +83,8 @@ class VehiculoControllerImplTest {
                 (placa, marca, modelo, idCliente, cilindraje) -> null,
                 (placa, marca, modelo, idCliente, carga) -> null,
                 placa -> null,
-                idCliente -> List.of());
+                idCliente -> List.of(),
+                List::of);
 
         controller.registrarAuto(" abc-123 ", " Toyota ", "2024", "1", "4");
 

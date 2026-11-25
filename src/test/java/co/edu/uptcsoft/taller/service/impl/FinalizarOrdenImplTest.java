@@ -52,6 +52,13 @@ class FinalizarOrdenImplTest {
 
         when(ordenTrabajoRepository.buscarPorId(idOrden)).thenReturn(Optional.of(orden));
 
-        assertThrows(ServiceException.class, () -> service.execute(idOrden, ""));
+        assertThrows(ServiceException.class, () -> service.execute(idOrden, "Observaciones"));
+    }
+
+    @Test
+    void rejectsNullOrBlankDeliveryObservationsBeforeChangingOrder() {
+        assertThrows(ServiceException.class, () -> service.execute("O1", null));
+        assertThrows(ServiceException.class, () -> service.execute("O1", "   "));
+        verifyNoInteractions(ordenTrabajoRepository);
     }
 }

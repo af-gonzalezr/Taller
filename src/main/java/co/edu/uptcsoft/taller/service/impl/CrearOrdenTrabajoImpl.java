@@ -26,10 +26,26 @@ public class CrearOrdenTrabajoImpl implements CrearOrdenTrabajo {
 
     @Override
     public OrdenTrabajo execute(String idOrden,
+                                String idVehiculo,
+                                String idTecnico,
+                                String observacionesIngreso) {
+        return crearOrden(idOrden, LocalDateTime.now(), idVehiculo, idTecnico, observacionesIngreso);
+    }
+
+    @Override
+    public OrdenTrabajo execute(String idOrden,
                                 LocalDateTime fechaHoraIngreso,
                                 String idVehiculo,
                                 String idTecnico,
                                 String observacionesIngreso) {
+        return crearOrden(idOrden, fechaHoraIngreso, idVehiculo, idTecnico, observacionesIngreso);
+    }
+
+    private OrdenTrabajo crearOrden(String idOrden,
+                                    LocalDateTime fechaHoraIngreso,
+                                    String idVehiculo,
+                                    String idTecnico,
+                                    String observacionesIngreso) {
         if (ordenTrabajoRepository.buscarPorId(idOrden).isPresent()) {
             throw new ServiceException("Ya existe una Orden con esa id");
         }

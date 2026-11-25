@@ -59,4 +59,12 @@ class RegistrarCamionImplTest {
 
         assertThrows(ElementoNoEncontradoException.class, () -> service.execute(placa, "Volvo", 2024, idCliente, 10.0));
     }
+
+    @Test
+    void rejectsNonPositiveOrNonFiniteValuesBeforeRepositoryAccess() {
+        assertThrows(ServiceException.class, () -> service.execute("ABC-123", "Volvo", 0, "1", 10.0));
+        assertThrows(ServiceException.class, () -> service.execute("ABC-123", "Volvo", 2024, "1", 0.0));
+        assertThrows(ServiceException.class, () -> service.execute("ABC-123", "Volvo", 2024, "1", Double.NaN));
+        verifyNoInteractions(clienteRepository, vehiculoRepository);
+    }
 }

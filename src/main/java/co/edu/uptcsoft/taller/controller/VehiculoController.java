@@ -11,5 +11,6 @@ public interface VehiculoController {
     Motocicleta registrarMoto(String placa, String marca, String modelo, String idCliente, String cilindraje);
     Camion registrarCamion(String placa, String marca, String modelo, String idCliente, String capacidadCarga);
     Vehiculo buscarPorPlaca(String placa);
+    List<Vehiculo> listarTodos();
     List<Vehiculo> listarPorCliente(String idCliente);
 }

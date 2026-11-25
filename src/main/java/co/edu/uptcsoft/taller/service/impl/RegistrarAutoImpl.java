@@ -26,6 +26,9 @@ public class RegistrarAutoImpl implements RegistrarAuto {
                              int modelo,
                              String idCliente,
                              int numeroPuertas) {
+        if (modelo <= 0 || numeroPuertas <= 0) {
+            throw new ServiceException("El modelo y el número de puertas deben ser positivos");
+        }
 
         if(vehiculoRepository.buscarPorId(placa).isPresent()){
             throw new ServiceException("Placa ya registrada");

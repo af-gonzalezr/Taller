@@ -23,6 +23,9 @@ public class RegistrarMotoImpl implements RegistrarMoto {
 
     @Override
     public Motocicleta execute(String placa, String marca, int modelo, String idCliente, int cilindraje) {
+        if (modelo <= 0 || cilindraje <= 0) {
+            throw new ServiceException("El modelo y el cilindraje deben ser positivos");
+        }
 
         if(vehiculoRepository.buscarPorId(placa).isPresent()){
             throw new ServiceException("La placa ya esta en uso");
