@@ -50,6 +50,7 @@ public class PanelVehiculos extends JPanel {
         modeloTabla = new DefaultTableModel(columnas, 0);
 
         tablaVehiculos = new JTable(modeloTabla);
+        tablaVehiculos.getTableHeader().setReorderingAllowed(false);
         tablaVehiculos.setDefaultEditor(Object.class, null);
         tablaVehiculos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaVehiculos.setRowHeight(26);

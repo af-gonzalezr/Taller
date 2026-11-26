@@ -14,7 +14,7 @@ public class ClienteRepository implements Repository<Cliente> {
     private final Map<String, Cliente> clientes;
 
     public ClienteRepository() {
-        this.clientes = new HashMap<>();
+        clientes = new HashMap<>();
     }
 
     @Override

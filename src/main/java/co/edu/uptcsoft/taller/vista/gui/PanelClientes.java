@@ -38,6 +38,7 @@ public class PanelClientes extends JPanel {
         String[] columnas = {"ID / Documento", "Nombre", "Teléfono", "Correo"};
         modeloTabla = new DefaultTableModel(columnas,0);
         tableCliente = new JTable(modeloTabla);
+        tableCliente.getTableHeader().setReorderingAllowed(false);
         tableCliente.setRowHeight(26);
 
         tableCliente.setDefaultEditor(Object.class,null);

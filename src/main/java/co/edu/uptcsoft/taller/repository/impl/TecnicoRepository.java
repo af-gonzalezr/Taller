@@ -14,7 +14,7 @@ public class TecnicoRepository implements Repository<Tecnico> {
     private final Map<String, Tecnico> tecnicos;
 
     public TecnicoRepository() {
-        this.tecnicos = new HashMap<>();
+        tecnicos = new HashMap<>();
     }
 
     @Override

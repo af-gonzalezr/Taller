@@ -14,7 +14,7 @@ public class OrdenRepository implements Repository<OrdenTrabajo> {
     private final Map<String, OrdenTrabajo> ordenes;
 
     public OrdenRepository() {
-        this.ordenes = new HashMap<>();
+        ordenes = new HashMap<>();
     }
 
     @Override

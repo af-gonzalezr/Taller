@@ -102,6 +102,7 @@ public class PanelOrdenes extends JPanel {
         modeloTabla = new DefaultTableModel(columnas, 0);
 
         tablaOrdenes = new JTable(modeloTabla);
+        tablaOrdenes.getTableHeader().setReorderingAllowed(false);
         tablaOrdenes.setDefaultEditor(Object.class,null);
         tablaOrdenes.setRowHeight(28);
         tablaOrdenes.getColumnModel().getColumn(8).setMaxWidth(65);

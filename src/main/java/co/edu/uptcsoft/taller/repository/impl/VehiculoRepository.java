@@ -14,7 +14,7 @@ public class VehiculoRepository implements Repository<Vehiculo> {
     private final Map<String, Vehiculo> vehiculos;
 
     public VehiculoRepository() {
-        this.vehiculos = new HashMap<>();
+        vehiculos = new HashMap<>();
     }
 
     @Override

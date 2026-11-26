@@ -41,6 +41,7 @@ public class PanelTecnicos extends JPanel {
         String[] columnas = {"ID", "Nombre", "Especialidad"};
         modeloTabla = new DefaultTableModel(columnas, 0);
         tableTecnicos = new JTable(modeloTabla);
+        tableTecnicos.getTableHeader().setReorderingAllowed(false);
         tableTecnicos.setDefaultEditor(Object.class, null);
         tableTecnicos.setRowHeight(26);
         add(new JScrollPane(tableTecnicos), BorderLayout.CENTER);
